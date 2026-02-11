@@ -1,70 +1,73 @@
-# ExpenseTracker
+# Welcome to your Lovable project
 
-A lightweight personal finance dashboard built with Vite + React + TypeScript and Tailwind CSS.
+## Project info
 
-## Features
-- Dashboard with summary cards and charts
-- Transactions, Categories, Budgets, Accounts, Reports, Goals, Settings
-- Mobile-first responsive UI with an accessible hamburger menu
-- Quick add transaction button
+**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
 
-## Tech Stack
-- Vite
-- React
-- TypeScript
-- Tailwind CSS
-- shadcn/ui style primitives
-- React Router
+## How can I edit this code?
 
-## Quickstart
-Prerequisites: Node 18+ and npm
+There are several ways of editing your application.
 
-1. Install dependencies
+**Use Lovable**
 
-```bash
-npm install
-```
+Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
 
-2. Run development server
+Changes made via Lovable will be committed automatically to this repo.
 
-```bash
+**Use your preferred IDE**
+
+If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+
+The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+
+Follow these steps:
+
+```sh
+# Step 1: Clone the repository using the project's Git URL.
+git clone <YOUR_GIT_URL>
+
+# Step 2: Navigate to the project directory.
+cd <YOUR_PROJECT_NAME>
+
+# Step 3: Install the necessary dependencies.
+npm i
+
+# Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
 
-3. Build for production
+**Edit a file directly in GitHub**
 
-```bash
-npm run build
-```
+- Navigate to the desired file(s).
+- Click the "Edit" button (pencil icon) at the top right of the file view.
+- Make your changes and commit the changes.
 
-4. Preview the production build locally
+**Use GitHub Codespaces**
 
-```bash
-npm run preview
-```
+- Navigate to the main page of your repository.
+- Click on the "Code" button (green button) near the top right.
+- Select the "Codespaces" tab.
+- Click on "New codespace" to launch a new Codespace environment.
+- Edit files directly within the Codespace and commit and push your changes once you're done.
 
-## Vercel deployment notes
-- This repo includes a `vercel.json` configured for a Vite SPA (rewrites all routes to `index.html`).
-- In the Vercel Project Settings set:
-  - **Build Command**: `npm run build`
-  - **Output Directory**: `dist`
-  - **Root Directory**: (the folder that contains `package.json` — usually the repo root)
-- If you use Next.js instead, remove or adapt `vercel.json` so Vercel can use the Next.js preset.
+## What technologies are used for this project?
 
-## Important files
-- Mobile nav component: src/components/layout/MobileNav.tsx
-- Layout wrapper: src/components/layout/AppLayout.tsx
-- Desktop sidebar: src/components/layout/Sidebar.tsx
-- Vercel config: vercel.json
+This project is built with:
 
-## Mobile nav & "Powered by Archer"
-- The mobile hamburger now contains all nav items and an external link: https://abdulbasit-archer.vercel.app/ (opens in new tab with `rel="noopener noreferrer"`).
-- To change or move the "Powered by" link, edit `src/components/layout/MobileNav.tsx` (the anchor element is near the bottom of the nav list).
+- Vite
+- TypeScript
+- React
+- shadcn-ui
+- Tailwind CSS
 
-## Contributing
-- Fork, create a branch, submit a PR. Keep changes focused and include tests where appropriate.
+## How can I deploy this project?
 
-## License
-MIT
-## 🚀 Updated Section
-This README was updated.
+Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+
+## Can I connect a custom domain to my Lovable project?
+
+Yes, you can!
+
+To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+
+Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
