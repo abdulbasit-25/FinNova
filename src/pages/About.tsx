@@ -89,38 +89,6 @@ export default function About() {
           </p>
         </div>
       </motion.section>
-
-      {/* APP FEATURES */}
-      <motion.section
-        className="glass-card p-6 rounded-2xl space-y-6"
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.3 }}
-        variants={fadeUp}
-        transition={{ duration: 0.5, delay: 0.1 }}
-      >
-        <div>
-          <h2 className="text-xl font-semibold text-foreground mb-2">
-            Built for Simplicity & Power
-          </h2>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            FinNova helps you track income, manage expenses, set budgets,
-            and analyze spending patterns — all with a clean, intuitive
-            interface.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-          <FeatureCard icon={<Wallet className="h-4 w-4" />} title="Income & Expenses" />
-          <FeatureCard icon={<BarChart3 className="h-4 w-4" />} title="Smart Analytics" />
-          <FeatureCard icon={<Target className="h-4 w-4" />} title="Budget & Goals" />
-          <FeatureCard icon={<Globe className="h-4 w-4" />} title="Multi-Currency" />
-          <FeatureCard icon={<Shield className="h-4 w-4" />} title="Secure Backups" />
-          <FeatureCard icon={<Sparkles className="h-4 w-4" />} title="Clean UI Experience" />
-        </div>
-      </motion.section>
-
-      {/* CREATOR */}
       <motion.section
         className="glass-card p-6 sm:p-8 rounded-2xl space-y-6
                    relative overflow-hidden
@@ -213,6 +181,38 @@ export default function About() {
           </div>
         </div>
       </motion.section>
+
+      {/* APP FEATURES */}
+      <motion.section
+        className="glass-card p-6 rounded-2xl space-y-6"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={fadeUp}
+        transition={{ duration: 0.5, delay: 0.1 }}
+      >
+        <div>
+          <h2 className="text-xl font-semibold text-foreground mb-2">
+            Built for Simplicity & Power
+          </h2>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            FinNova helps you track income, manage expenses, set budgets,
+            and analyze spending patterns — all with a clean, intuitive
+            interface.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+          <FeatureCard icon={<Wallet className="h-4 w-4" />} title="Income & Expenses" />
+          <FeatureCard icon={<BarChart3 className="h-4 w-4" />} title="Smart Analytics" />
+          <FeatureCard icon={<Target className="h-4 w-4" />} title="Budget & Goals" />
+          <FeatureCard icon={<Globe className="h-4 w-4" />} title="Multi-Currency" />
+          <FeatureCard icon={<Shield className="h-4 w-4" />} title="Secure Backups" />
+          <FeatureCard icon={<Sparkles className="h-4 w-4" />} title="Clean UI Experience" />
+        </div>
+      </motion.section>
+
+      {/* CREATOR */}
 
       {/* APP INFO */}
       <motion.section
