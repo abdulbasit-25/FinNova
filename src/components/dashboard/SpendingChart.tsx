@@ -46,10 +46,22 @@ export function SpendingChart() {
               <Cell key={i} fill={entry.color} />
             ))}
           </Pie>
-          <Tooltip
-            formatter={(value: number) => `${sym}${value.toFixed(2)}`}
-            contentStyle={{ borderRadius: '8px', border: '1px solid hsl(var(--border))', background: 'hsl(var(--card))' }}
-          />
+        <Tooltip
+  formatter={(value: number) => `${sym}${value.toFixed(2)}`}
+  contentStyle={{
+    borderRadius: '8px',
+    border: '1px solid hsl(var(--border))',
+    backgroundColor: 'hsl(var(--card))',
+  }}
+  itemStyle={{
+    color: 'hsl(var(--foreground))',
+  }}
+  labelStyle={{
+    color: 'hsl(var(--foreground))',
+    fontWeight: 600,
+  }}
+/>
+
         </PieChart>
       </ResponsiveContainer>
       <div className="mt-3 flex flex-wrap gap-3">

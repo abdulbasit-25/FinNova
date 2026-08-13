@@ -1,16 +1,26 @@
 import { useApp } from '@/contexts/AppContext';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { AccentColor } from '@/types/expense-tracker';
 import { Download, Upload, RotateCcw } from 'lucide-react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 export default function SettingsPage() {
   const { data, updateSettings, exportData, importData, resetData } = useApp();
   const { settings } = data;
+  const { toast } = useToast();
   const fileRef = useRef<HTMLInputElement>(null);
+  const [resetDialogOpen, setResetDialogOpen] = useState(false);
 
   const handleExport = () => {
     const blob = new Blob([exportData()], { type: 'application/json' });
@@ -18,6 +28,10 @@ export default function SettingsPage() {
     const a = document.createElement('a');
     a.href = url; a.download = 'expense-tracker-backup.json'; a.click();
     URL.revokeObjectURL(url);
+    toast({
+      title: 'Success',
+      description: 'Backup data downloaded successfully!',
+    });
   };
 
   const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,13 +40,22 @@ export default function SettingsPage() {
     const reader = new FileReader();
     reader.onload = () => {
       const success = importData(reader.result as string);
-      alert(success ? 'Data imported successfully!' : 'Invalid backup file.');
+      toast({
+        title: success ? 'Success' : 'Error',
+        description: success ? 'Data imported successfully!' : 'Invalid backup file. Please check and try again.',
+        variant: success ? 'default' : 'destructive',
+      });
     };
     reader.readAsText(file);
   };
 
   const handleReset = () => {
-    if (confirm('Are you sure? This will delete ALL your data.')) resetData();
+    resetData();
+    setResetDialogOpen(false);
+    toast({
+      title: 'Success',
+      description: 'All data has been reset to defaults.',
+    });
   };
 
   const accentColors: { value: AccentColor; label: string; hsl: string }[] = [
@@ -41,21 +64,39 @@ export default function SettingsPage() {
     { value: 'purple', label: 'Purple', hsl: '262 83% 58%' },
   ];
 
+  const currencies = [
+    { symbol: '₨', label: 'PKR - Pakistani Rupee' },
+    { symbol: '$', label: 'USD - US Dollar' },
+    { symbol: '€', label: 'EUR - Euro' },
+    { symbol: '£', label: 'GBP - British Pound' },
+    { symbol: '¥', label: 'CNY - Chinese Yuan' },
+    { symbol: '₹', label: 'INR - Indian Rupee' },
+    { symbol: 'A$', label: 'AUD - Australian Dollar' },
+    { symbol: 'C$', label: 'CAD - Canadian Dollar' },
+    { symbol: '⃁', label: 'SAR - Saudi Riyal' },
+    { symbol: '฿', label: 'THB - Thai Baht' },
+  ];
+
   return (
     <div className="space-y-6 max-w-lg">
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Settings</h1>
+        <h1 className="text-lg sm:text-2xl font-bold text-foreground">Settings</h1>
         <p className="text-sm text-muted-foreground">Customize your experience</p>
       </div>
 
       <div className="glass-card p-6 space-y-5">
         <div>
           <Label>Currency Symbol</Label>
-          <Input
-            value={settings.currencySymbol}
-            onChange={e => updateSettings({ currencySymbol: e.target.value })}
-            className="mt-1 w-24"
-          />
+          <Select value={settings.currencySymbol} onValueChange={v => updateSettings({ currencySymbol: v })}>
+            <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              {currencies.map(c => (
+                <SelectItem key={c.symbol} value={c.symbol}>
+                  {c.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div>
@@ -99,11 +140,26 @@ export default function SettingsPage() {
             <Upload className="h-4 w-4" /> Import Backup
           </Button>
           <input ref={fileRef} type="file" accept=".json" onChange={handleImport} className="hidden" />
-          <Button variant="destructive" size="sm" onClick={handleReset} className="gap-1.5">
+          <Button variant="destructive" size="sm" onClick={() => setResetDialogOpen(true)} className="gap-1.5">
             <RotateCcw className="h-4 w-4" /> Reset All Data
           </Button>
         </div>
       </div>
+
+      <AlertDialog open={resetDialogOpen} onOpenChange={setResetDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogTitle>Reset All Data</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete all your expenses, categories, budgets, goals, and accounts. Please make sure you have a backup before proceeding.
+          </AlertDialogDescription>
+          <div className="flex gap-3 justify-end">
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleReset} className="bg-destructive hover:bg-destructive/90">
+              Delete All Data
+            </AlertDialogAction>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 export type TransactionType = 'income' | 'expense' | 'transfer';
-export type PaymentMethod = 'cash' | 'card' | 'bank_transfer' | 'upi' | 'other';
+export type PaymentMethod = 'cash' | 'card' | 'bank_transfer' | 'OnlinePayments' | 'other';
 export type RecurringFrequency = 'daily' | 'weekly' | 'monthly' | 'custom';
 export type AccentColor = 'blue' | 'green' | 'purple';
 

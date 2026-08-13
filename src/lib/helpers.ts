@@ -1,15 +1,61 @@
 import { Transaction } from '@/types/expense-tracker';
+import {
+  UtensilsCrossed,
+  Receipt,
+  ShoppingBag,
+  Car,
+  Gamepad2,
+  Heart,
+  Briefcase,
+  Building2,
+  Laptop,
+  MoreHorizontal,
+  Banknote,
+  Landmark,
+  CreditCard,
+  Wallet,
+  LucideIcon,
+} from 'lucide-react';
+
+export const USD_TO_PKR = 280; // default exchange rate (1 USD -> 280 PKR)
+
+// Icon mapping for Lucide React icons
+export const ICON_MAP: Record<string, LucideIcon> = {
+  UtensilsCrossed,
+  Receipt,
+  ShoppingBag,
+  Car,
+  Gamepad2,
+  Heart,
+  Briefcase,
+  Building2,
+  Laptop,
+  MoreHorizontal,
+  Banknote,
+  Landmark,
+  CreditCard,
+  Wallet,
+};
+
+// Helper to get icon component by name
+export function getIconComponent(iconName: string): LucideIcon {
+  return ICON_MAP[iconName] || MoreHorizontal;
+}
 
 export function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).substring(2, 9);
 }
 
-export function formatCurrency(amount: number, symbol: string = '$'): string {
-  const formatted = Math.abs(amount).toLocaleString('en-US', {
+export function formatCurrency(amount: number, symbol: string = '₨'): string {
+  const formatted = Math.abs(amount).toLocaleString('en-PK', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
   return `${amount < 0 ? '-' : ''}${symbol}${formatted}`;
+}
+
+export function convertUsdToPkr(amountUsd: number, rate: number = USD_TO_PKR): number {
+  return Math.round(amountUsd * rate * 100) / 100;
 }
 
 export function getMonthKey(date: Date = new Date()): string {

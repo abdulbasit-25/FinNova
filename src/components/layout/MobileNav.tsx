@@ -11,6 +11,7 @@ import {
   Tag,
   Receipt,
   Target,
+  Info,
 } from "lucide-react";
 
 const navItems = [
@@ -22,6 +23,7 @@ const navItems = [
   { to: "/reports", label: "Reports", icon: BarChart3 },
   { to: "/goals", label: "Goals", icon: Target },
   { to: "/settings", label: "Settings", icon: Settings },
+  { to: "/about", label: "About", icon: Info },
 ];
 
 export default function MobileNav() {
@@ -67,9 +69,13 @@ export default function MobileNav() {
       >
         <div className="flex items-center justify-between p-4 border-b border-border">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold text-sm">ET</div>
+            <img
+              src="/image.png"
+              alt="FinNova Logo"
+              className="h-9 w-9 rounded-lg object-cover"
+            />
             <div>
-              <div className="text-sm font-semibold">ExpenseTracker</div>
+              <div className="text-sm font-semibold">FinNova</div>
               <div className="text-xs text-muted-foreground">Personal finance</div>
             </div>
           </div>

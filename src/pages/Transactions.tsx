@@ -51,23 +51,23 @@ export default function Transactions() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Transactions</h1>
+        <h1 className="text-lg sm:text-2xl font-bold text-foreground">Transactions</h1>
         <p className="text-sm text-muted-foreground">{transactions.length} total</p>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-3">
-        <div className="relative flex-1 min-w-[200px]">
+      <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3">
+        <div className="relative flex-1 min-w-0 sm:min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search transactions..."
+            placeholder="Search..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="pl-9"
+            className="pl-9 text-sm"
           />
         </div>
         <Select value={typeFilter} onValueChange={setTypeFilter}>
-          <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
+          <SelectTrigger className="w-full sm:w-32"><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Types</SelectItem>
             <SelectItem value="income">Income</SelectItem>
@@ -76,7 +76,7 @@ export default function Transactions() {
           </SelectContent>
         </Select>
         <Select value={sortBy} onValueChange={setSortBy}>
-          <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
+          <SelectTrigger className="w-full sm:w-32"><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="newest">Newest</SelectItem>
             <SelectItem value="oldest">Oldest</SelectItem>
@@ -98,21 +98,21 @@ export default function Transactions() {
       {/* List */}
       <div className="glass-card divide-y divide-border">
         {filtered.length === 0 ? (
-          <p className="p-8 text-center text-sm text-muted-foreground">No transactions found</p>
+          <p className="p-4 sm:p-8 text-center text-sm text-muted-foreground">No transactions found</p>
         ) : (
           filtered.map(t => {
             const cat = categories.find(c => c.id === t.categoryId);
             const isIncome = t.type === 'income';
             return (
-              <div key={t.id} className="flex items-center gap-3 p-4 hover:bg-muted/30 transition-colors">
+              <div key={t.id} className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 hover:bg-muted/30 transition-colors">
                 <input
                   type="checkbox"
                   checked={selected.has(t.id)}
                   onChange={() => toggleSelect(t.id)}
-                  className="rounded border-border"
+                  className="rounded border-border shrink-0"
                 />
                 <div
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xs font-bold"
+                  className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-lg text-xs font-bold"
                   style={{
                     backgroundColor: `hsl(${cat?.color || '220 10% 46%'} / 0.15)`,
                     color: `hsl(${cat?.color || '220 10% 46%'})`,
@@ -121,14 +121,14 @@ export default function Transactions() {
                   {cat?.name.charAt(0) || '?'}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-foreground truncate">{cat?.name || 'Unknown'}</p>
-                  <p className="text-xs text-muted-foreground">{t.date} · {t.notes || t.paymentMethod}</p>
+                  <p className="text-xs sm:text-sm font-medium text-foreground truncate">{cat?.name || 'Unknown'}</p>
+                  <p className="text-xs text-muted-foreground truncate">{t.date} · {t.notes || t.paymentMethod}</p>
                 </div>
-                <span className={`text-sm font-semibold ${isIncome ? 'text-success' : 'text-destructive'}`}>
+                <span className={`text-xs sm:text-sm font-semibold whitespace-nowrap ${isIncome ? 'text-success' : 'text-destructive'}`}>
                   {isIncome ? '+' : '-'}{formatCurrency(t.amount, sym)}
                 </span>
-                <button onClick={() => deleteTransaction(t.id)} className="text-muted-foreground hover:text-destructive p-1">
-                  <Trash2 className="h-3.5 w-3.5" />
+                <button onClick={() => deleteTransaction(t.id)} className="text-muted-foreground hover:text-destructive p-1 shrink-0">
+                  <Trash2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                 </button>
               </div>
             );

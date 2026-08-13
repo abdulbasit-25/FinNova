@@ -22,16 +22,16 @@ export function SummaryCards() {
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 md:grid-cols-4">
       {cards.map(card => (
-        <div key={card.label} className="glass-card p-5 animate-fade-in">
-          <div className="flex items-center justify-between mb-3">
+        <div key={card.label} className="glass-card p-3 sm:p-4 animate-fade-in">
+          <div className="flex items-center justify-between mb-2 sm:mb-3">
             <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
               {card.label}
             </span>
-            <card.icon className={`h-5 w-5 ${card.iconColor}`} />
+            <card.icon className={`h-4 w-4 sm:h-5 sm:w-5 ${card.iconColor}`} />
           </div>
-          <div className="text-2xl font-bold text-foreground">
+          <div className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">
             <AnimatedCounter value={card.value} symbol={sym} />
           </div>
         </div>

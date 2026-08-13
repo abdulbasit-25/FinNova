@@ -130,12 +130,16 @@
 }
 
 @layer base {
+  html {
+    @apply overflow-x-hidden;
+  }
+
   * {
     @apply border-border;
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground antialiased overflow-x-hidden;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
 }
@@ -158,4 +162,115 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
+  /* Custom accent-colored scrollbar */
+    /* ======================================== */
+  /* ✨ SYSTEM GLASS SCROLLBAR (PREMIUM) ✨ */
+  /* ======================================== */
+
+  .scrollbar-accent {
+    scrollbar-color: hsl(var(--accent)) transparent;
+    scrollbar-width: thin;
+  }
+
+  .scrollbar-accent::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* Glass Track */
+  .scrollbar-accent::-webkit-scrollbar-track {
+    background: hsl(var(--glass-bg));
+    border: 1px solid hsl(var(--glass-border));
+    backdrop-filter: blur(12px);
+    border-radius: 999px;
+  }
+
+  /* Premium Thumb */
+  .scrollbar-accent::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+      180deg,
+      hsl(var(--accent) / 0.95),
+      hsl(var(--accent) / 0.75)
+    );
+
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+
+    box-shadow:
+      inset 0 1px 2px hsl(0 0% 100% / 0.4),
+      0 0 0 1px hsl(var(--accent) / 0.25),
+      0 6px 16px hsl(var(--accent) / 0.25);
+
+    transition:
+      transform 0.25s cubic-bezier(.4,0,.2,1),
+      box-shadow 0.3s ease,
+      background 0.3s ease;
+  }
+
+  .scrollbar-accent::-webkit-scrollbar-thumb:hover {
+    transform: scale(1.15);
+
+    box-shadow:
+      inset 0 1px 3px hsl(0 0% 100% / 0.6),
+      0 0 0 2px hsl(var(--accent) / 0.4),
+      0 8px 24px hsl(var(--accent) / 0.4);
+  }
+
+  .scrollbar-accent::-webkit-scrollbar-thumb:active {
+    transform: scale(1.05);
+
+    box-shadow:
+      inset 0 2px 4px hsl(0 0% 0% / 0.25),
+      0 10px 28px hsl(var(--accent) / 0.5);
+  }
+
+  /* ======================================== */
+  /* Global Scrollbar (System Integrated) */
+  /* ======================================== */
+
+  html {
+    scrollbar-color: hsl(var(--accent)) transparent;
+    scrollbar-width: thin;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted) / 0.15);
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+      180deg,
+      hsl(var(--accent) / 0.9),
+      hsl(var(--accent) / 0.7)
+    );
+
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+
+    box-shadow:
+      inset 0 1px 2px hsl(0 0% 100% / 0.3),
+      0 4px 12px hsl(var(--accent) / 0.2);
+
+    transition:
+      transform 0.25s cubic-bezier(.4,0,.2,1),
+      box-shadow 0.3s ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    transform: scale(1.1);
+
+    box-shadow:
+      inset 0 1px 3px hsl(0 0% 100% / 0.5),
+      0 6px 20px hsl(var(--accent) / 0.35);
+  }
+
 }

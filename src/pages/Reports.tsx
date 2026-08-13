@@ -56,7 +56,7 @@ export default function Reports() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Reports</h1>
+          <h1 className="text-lg sm:text-2xl font-bold text-foreground">Reports</h1>
           <p className="text-sm text-muted-foreground">Your financial analytics</p>
         </div>
         <button onClick={handleExportCSV} className="text-sm text-primary hover:underline">Export CSV</button>

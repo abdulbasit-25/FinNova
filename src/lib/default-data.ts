@@ -21,8 +21,8 @@ export const defaultAccounts: Account[] = [
 ];
 
 export const defaultSettings: AppSettings = {
-  currency: 'USD',
-  currencySymbol: '$',
+  currency: 'PKR',
+  currencySymbol: '₨',
   theme: 'light',
   accentColor: 'blue',
   language: 'en',

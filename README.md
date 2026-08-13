@@ -1,103 +1,105 @@
-# FinOvaa - Personal Finance & Expense Tracker
+<div align="center">
 
-A modern, responsive web application for managing personal finances with features for tracking expenses, income, budgets, goals, and financial reports.
+# 💸 FinOvaa
 
-🌐 **Live Demo**: [https://finovaa.vercel.app/](https://finovaa.vercel.app/)
+**A modern, responsive personal finance & expense tracker**
 
-## Features
+Track spending, manage budgets, hit savings goals, and see where your money actually goes — all in one clean dashboard.
+
+[**Live Demo →**](https://finovaa.vercel.app/)
+
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-blue?logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-Build-646CFF?logo=vite&logoColor=white)
+![Tailwind](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
+
+</div>
+
+---
+
+## Overview
+
+FinOvaa is a full-featured expense tracker built for people who want clarity on their money without signing up for yet another account. Everything runs client-side — transactions, budgets, accounts, and goals are all stored in the browser, with export/import for backup.
+
+## ✨ Features
 
 ### 📊 Dashboard
-- Real-time summary cards showing total income, expenses, and balance
-- Quick animations with Framer Motion
+- Real-time summary cards for income, expenses, and balance
+- Smooth entrance animations with Framer Motion
 - Recent transactions overview
-- Monthly spending and income charts
-- Weekly expense trends
+- Monthly spending/income charts and weekly trends
 
-### 💳 Transaction Management
-- Add expenses, income, and fund transfers
-- Categorize transactions with custom icons and colors
+### 💳 Transactions
+- Log expenses, income, and transfers between accounts
+- Custom categories with icons and colors
 - Multiple payment methods (Cash, Card, Bank Transfer, Online Payment)
-- Date and time tracking
-- Form state persistence (sessionStorage)
-- Transaction history with filtering and sorting
+- Date/time tracking with form-state recovery (sessionStorage)
+- Filterable, sortable transaction history
 
 ### 📁 Categories
-- Create custom spending categories with Lucide React icons
-- Color-coded category cards
-- Track monthly spending by category
-- Expense and income category management
-- Default categories included
+- Custom spending categories with Lucide icons
+- Color-coded cards and monthly spend-by-category tracking
+- Separate expense and income category sets, with sensible defaults
 
-### 💰 Budget Management
-- Set overall monthly budgets
-- Category-specific budget limits
-- Visual progress tracking
-- Budget utilization indicators
-- Color-coded warnings (green/yellow/red)
+### 💰 Budgets
+- Overall monthly budget plus per-category limits
+- Visual progress tracking with green/yellow/red utilization warnings
 
 ### 💼 Accounts
-- Multiple account management (Cash, Bank, Credit Card, Digital Wallet)
-- Account balance tracking
-- Income and expense monitoring per account
-- Transfer between accounts
+- Multiple accounts — Cash, Bank, Credit Card, Digital Wallet
+- Per-account balance, income, and expense tracking
+- Transfers between accounts
 
 ### 🎯 Goals
-- Create and track savings goals
-- Progress visualization with progress bars
-- Track goal completion status
-- Fund goals from available accounts
-- Goal achievement analytics
+- Create and track savings goals with progress bars
+- Fund goals directly from an account
+- Goal completion analytics
 
 ### 📈 Reports
-- Monthly spending analysis
-- Category-wise breakdown
-- Income vs. Expense comparison
-- Expense trends and patterns
-- Export financial data
+- Monthly spending analysis and category breakdowns
+- Income vs. expense comparison and trend patterns
+- Exportable financial data
 
 ### ⚙️ Settings
-- Light/Dark theme support
-- Accent color customization
+- Light/dark theme with accent color customization
 - Currency selection with symbol support (PKR, USD, etc.)
-- Data export (JSON) for backup
-- Full data import from previous exports
-- Data reset functionality
+- Full JSON export/import for backup and migration
+- Data reset
 
-### 📱 Responsive Design
-- Mobile-first approach
-- Tablet optimization
-- Desktop layout with collapsible sidebar
-- Smooth transitions and animations
-- Touch-friendly UI components
+### 📱 Responsive by Default
+- Mobile-first layout with a bottom nav on small screens
+- Collapsible sidebar on desktop
+- Touch-friendly components throughout, breakpoints at `sm` (640px), `md` (768px), `lg` (1024px)
 
-## Tech Stack
+## 🛠 Tech Stack
 
-- **Frontend Framework**: React 18
-- **Build Tool**: Vite
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **UI Components**: shadcn/ui
-- **Icons**: Lucide React (40+ icons)
-- **Routing**: React Router v7
-- **Animations**: Framer Motion
-- **State Management**: React Context API
-- **Storage**: LocalStorage & SessionStorage
-- **Testing**: Vitest
-- **Deployment**: Vercel
+| Layer | Choice |
+|---|---|
+| Framework | React 18 |
+| Build Tool | Vite |
+| Language | TypeScript |
+| Styling | Tailwind CSS |
+| UI Components | shadcn/ui |
+| Icons | Lucide React (40+ icons) |
+| Routing | React Router v7 |
+| Animation | Framer Motion |
+| State | React Context API |
+| Storage | LocalStorage & SessionStorage |
+| Testing | Vitest |
+| Deployment | Vercel |
 
-## Installation
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- npm or bun package manager
+- Node.js v16+
+- npm or bun
 
 ### Setup
 
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/finovaa.git
-
-# Navigate to the project directory
 cd finovaa
 
 # Install dependencies
@@ -105,167 +107,131 @@ npm install
 # or
 bun install
 
-# Start development server
+# Start the dev server
 npm run dev
 # or
 bun run dev
 ```
 
-The application will open at `http://localhost:8082` (or next available port)
+App runs at `http://localhost:8082` (or the next available port).
 
-## Development
+### Scripts
 
 ```bash
-# Start development server with hot module replacement
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-
-# Run tests
-npm run test
+npm run dev       # Dev server with HMR
+npm run build     # Production build
+npm run preview   # Preview the production build
+npm run test      # Run tests with Vitest
 ```
 
-## Project Structure
+## 📂 Project Structure
 
 ```
 src/
 ├── components/
-│   ├── layout/              # Layout components (Sidebar, AppLayout, etc.)
-│   ├── dashboard/           # Dashboard-specific components
-│   ├── modals/              # Reusable modal components
-│   └── ui/                  # shadcn/ui components
-├── pages/                   # Page components (Dashboard, Transactions, etc.)
-├── hooks/                   # Custom React hooks
-├── contexts/                # React Context (AppContext)
-├── lib/                     # Utility functions and helpers
-├── types/                   # TypeScript type definitions
-├── App.tsx                  # Main app component with routing
-└── main.tsx                 # Entry point
+│   ├── layout/       # Sidebar, AppLayout, etc.
+│   ├── dashboard/     # Dashboard-specific components
+│   ├── modals/        # Reusable modal components
+│   └── ui/            # shadcn/ui components
+├── pages/              # Dashboard, Transactions, Budgets, etc.
+├── hooks/              # Custom React hooks
+├── contexts/           # React Context (AppContext)
+├── lib/                # Utilities and helpers
+├── types/              # TypeScript type definitions
+├── App.tsx             # Root component + routing
+└── main.tsx            # Entry point
 ```
 
-## Key Features Implementation
+## 🧩 Implementation Notes
 
-### State Management
-- Global app state using React Context API
-- Automatic persistence to LocalStorage
-- Session-based form state recovery
+**State management** — global app state via React Context, with automatic persistence to LocalStorage and session-based form recovery.
 
-### Data Persistence
-- All transactions, categories, and accounts saved to browser storage
-- Export/Import functionality for data backup
-- Optional cloud sync (future feature)
+**Data persistence** — transactions, categories, and accounts all live in browser storage; export/import handles backup, with cloud sync planned.
 
-### Form Validation
-- Real-time validation for all forms
-- Clear error messages
-- Field-level error tracking
-- Toast notifications for user feedback
+**Form validation** — real-time, field-level error tracking with toast feedback.
 
-### Responsive Layout
-- Mobile sidebar hidden by default
-- Bottom navigation for mobile
-- Collapsible sidebar for desktop
-- Proper breakpoints: sm (640px), md (768px), lg (1024px)
+**Responsive layout** — sidebar hidden by default on mobile in favor of bottom nav, collapsible on desktop.
 
-## Deployment
+## 🗺 Routes
 
-The application is deployed on Vercel and automatically updates with each push to the main branch.
+| Path | Page |
+|---|---|
+| `/` | Dashboard |
+| `/transactions` | Transaction list & management |
+| `/categories` | Category management |
+| `/accounts` | Account management |
+| `/budgets` | Budget planning |
+| `/goals` | Savings goals |
+| `/reports` | Financial reports |
+| `/settings` | App settings |
+| `/about` | About |
 
-**Deployed Link**: [https://finovaa.vercel.app/](https://finovaa.vercel.app/)
+## ⌨️ Keyboard Shortcuts
 
-### Deploy Your Own
+- `Esc` — close modals / go back
+- `Tab` — navigate form fields
+- `Enter` — submit forms
 
-1. Fork this repository
-2. Sign up for [Vercel](https://vercel.com)
-3. Connect your GitHub repository to Vercel
-4. Vercel will automatically build and deploy on each push
+## ⚠️ Known Limitations
 
-```bash
-# Alternatively, deploy with Vercel CLI
-npm install -g vercel
-vercel
-```
+- 500KB max file size for data export/import
+- Single user per browser (no auth)
+- Data persists only on the current device
 
-## Browser Support
-
-- Chrome/Edge (latest)
-- Firefox (latest)
-- Safari (latest)
-- Mobile browsers (iOS Safari, Chrome Mobile)
-
-## Available Routes
-
-- `/` - Dashboard
-- `/transactions` - Transaction list and management
-- `/categories` - Category management
-- `/accounts` - Account management
-- `/budgets` - Budget planning
-- `/goals` - Savings goals
-- `/reports` - Financial reports
-- `/settings` - App settings
-- `/about` - About page
-
-## Keyboard Shortcuts
-
-- `Esc` - Close modals and go back
-- `Tab` - Navigate form fields
-- `Enter` - Submit forms
-
-## Known Limitations
-
-- Maximum 500KB file size for data export/import
-- Single user per browser (no authentication)
-- Data persists only on current device
-
-## Future Enhancements
+## 🔭 Roadmap
 
 - [ ] User authentication
 - [ ] Cloud sync
 - [ ] Mobile app (React Native)
 - [ ] Bill reminders
-- [ ] Recurring transactions automation
+- [ ] Recurring transaction automation
 - [ ] Advanced analytics and insights
-- [ ] Multi-currency support (exchange rates)
+- [ ] Multi-currency support (live exchange rates)
 - [ ] Budget alerts and notifications
-- [ ] Data visualization improvements
-- [ ] Dark mode optimization
+- [ ] Deeper data visualization
+- [ ] Dark mode refinements
 
-## Contributing
+## 🌍 Browser Support
 
-Contributions are welcome! Feel free to:
+Chrome/Edge, Firefox, Safari (latest), and mobile browsers (iOS Safari, Chrome Mobile).
+
+## 🚢 Deployment
+
+Deployed on Vercel, auto-updating on every push to `main`.
+
+**Live**: [finovaa.vercel.app](https://finovaa.vercel.app/)
+
+```bash
+npm install -g vercel
+vercel
+```
+
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
+2. Create a feature branch — `git checkout -b feature/amazing-feature`
+3. Commit — `git commit -m 'Add amazing feature'`
+4. Push — `git push origin feature/amazing-feature`
 5. Open a Pull Request
 
-## License
+## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT — see the `LICENSE` file for details.
 
-## Support
+## 💬 Support
 
-For issues, questions, or suggestions, please:
-- Open an issue on GitHub
-- Contact the development team
-- Check existing documentation
-
-## Changelog
-
-### Version 1.0.0 (Current)
-- Initial release with full feature set
-- Mobile-responsive design
-- Lucide React icon integration
-- Theme customization
-- Data import/export
+Open an issue on GitHub, or reach out to the development team via the links below.
 
 ---
 
-**Built with ❤️ for better financial management**
+<div align="center">
+
+### Powered by <a href="https://abdulbasit-archer.vercel.app/"><strong>ARCHER</strong></a>
+
+[Portfolio](https://abdulbasit-archer.vercel.app/) · [LinkedIn](https://lnkd.in/p/ddQJfr8x)
+
+*Built with ❤️ for better financial management*
 
 Last Updated: February 2026
+
+</div>
