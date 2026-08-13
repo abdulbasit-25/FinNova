@@ -195,25 +195,6 @@ src/
 
 Chrome/Edge, Firefox, Safari (latest), and mobile browsers (iOS Safari, Chrome Mobile).
 
-## 🚢 Deployment
-
-Deployed on Vercel, auto-updating on every push to `main`.
-
-**Live**: [finovaa.vercel.app](https://finovaa.vercel.app/)
-
-```bash
-npm install -g vercel
-vercel
-```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch — `git checkout -b feature/amazing-feature`
-3. Commit — `git commit -m 'Add amazing feature'`
-4. Push — `git push origin feature/amazing-feature`
-5. Open a Pull Request
-
 ## 📄 License
 
 MIT — see the `LICENSE` file for details.
