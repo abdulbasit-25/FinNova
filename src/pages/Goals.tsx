@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { useApp } from '@/contexts/AppContext';
 import { formatCurrency } from '@/lib/helpers';
 import { GoalsModal } from '@/components/modals/GoalsModal';
@@ -6,9 +6,214 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
-import { Plus, Target, Trash2, AlertCircle, Check, Lightbulb } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Plus, Edit2, Trash2, Target, Check, Lightbulb } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { SavingsGoal } from '@/types/expense-tracker';
+
+const MS_PER_DAY = 86_400_000;
+
+/**
+ * Days remaining until `deadline`. Unlike the previous implementation, this
+ * does NOT clamp negative values to 0 — that clamp made "deadline passed"
+ * (a negative diff) indistinguishable from "deadline is today" (diff of 0),
+ * which meant the "Deadline passed" message could never actually render.
+ */
+function daysUntil(deadline: string): number {
+  const diff = new Date(deadline).getTime() - Date.now();
+  return Math.ceil(diff / MS_PER_DAY);
+}
+
+function DeadlineNotice({ deadline }: { deadline: string }) {
+  const daysLeft = daysUntil(deadline);
+
+  if (daysLeft < 0) {
+    return <div className="text-xs mb-4 text-destructive font-semibold">⏰ Deadline passed</div>;
+  }
+  if (daysLeft === 0) {
+    return <div className="text-xs mb-4 text-destructive font-semibold">⚠️ Deadline is today</div>;
+  }
+  return (
+    <div className="text-xs mb-4 text-muted-foreground">
+      📅 {daysLeft} day{daysLeft !== 1 ? 's' : ''} remaining
+    </div>
+  );
+}
+
+// ---- Goal card -------------------------------------------------------
+
+function GoalCard({
+  goal: g,
+  currencySymbol,
+  onEdit,
+  onRequestDelete,
+  onCancelDelete,
+  onConfirmDelete,
+  isConfirmingDelete,
+  isAddingFunds,
+  addFundsAmount,
+  onOpenAddFunds,
+  onChangeAddFundsAmount,
+  onSubmitAddFunds,
+  onCancelAddFunds,
+}: {
+  goal: SavingsGoal;
+  currencySymbol: string;
+  onEdit: (g: SavingsGoal) => void;
+  onRequestDelete: (id: string) => void;
+  onCancelDelete: () => void;
+  onConfirmDelete: (id: string) => void;
+  isConfirmingDelete: boolean;
+  isAddingFunds: boolean;
+  addFundsAmount: string;
+  onOpenAddFunds: (id: string) => void;
+  onChangeAddFundsAmount: (value: string) => void;
+  onSubmitAddFunds: (id: string) => void;
+  onCancelAddFunds: () => void;
+}) {
+  const pct = Math.min((g.currentAmount / g.targetAmount) * 100, 100);
+  const isCompleted = g.currentAmount >= g.targetAmount;
+  const remaining = Math.max(0, g.targetAmount - g.currentAmount);
+
+  return (
+    <Card className="p-6 hover:shadow-md transition-shadow relative group overflow-hidden">
+      <AnimatePresence>
+        {isConfirmingDelete && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            role="alertdialog"
+            aria-modal="true"
+            aria-label={`Delete ${g.name}?`}
+            className="absolute inset-0 bg-black/60 backdrop-blur-[2px] rounded-lg z-10 flex flex-col items-center justify-center gap-4 p-4"
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') onCancelDelete();
+            }}
+          >
+            <div className="text-center">
+              <p className="text-sm font-semibold text-white">Delete "{g.name}"?</p>
+              <p className="text-xs text-white/75 mt-1">This action cannot be undone</p>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={onCancelDelete}
+                autoFocus
+                className="text-white border-white hover:bg-white/10"
+              >
+                Cancel
+              </Button>
+              <Button size="sm" variant="destructive" onClick={() => onConfirmDelete(g.id)}>
+                Delete
+              </Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Header */}
+      <div className="flex items-start justify-between mb-4">
+        <div>
+          <h3 className="text-lg font-semibold text-foreground">{g.name}</h3>
+          {isCompleted && (
+            <span className="inline-flex items-center gap-1 mt-1 px-2 py-1 rounded text-xs font-semibold bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">
+              <Check className="h-3 w-3" /> Completed
+            </span>
+          )}
+        </div>
+        <div className="flex gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
+          <button
+            onClick={() => onEdit(g)}
+            className="p-2 rounded-lg hover:bg-muted transition-colors"
+            aria-label={`Edit ${g.name}`}
+          >
+            <Edit2 className="h-4 w-4 text-muted-foreground" />
+          </button>
+          <button
+            onClick={() => onRequestDelete(g.id)}
+            className="p-2 rounded-lg hover:bg-muted transition-colors"
+            aria-label={`Delete ${g.name}`}
+          >
+            <Trash2 className="h-4 w-4 text-destructive" />
+          </button>
+        </div>
+      </div>
+
+      {/* Progress */}
+      <div className="space-y-3 mb-4 pb-4 border-b border-border">
+        <Progress value={pct} className="h-3" />
+        <div className="flex justify-between text-sm">
+          <div>
+            <p className="text-xs text-muted-foreground">Current</p>
+            <p className="font-semibold text-foreground tabular-nums">
+              {formatCurrency(g.currentAmount, currencySymbol)}
+            </p>
+          </div>
+          <div className="text-center">
+            <p className="text-xs text-muted-foreground">Progress</p>
+            <p className="font-semibold text-primary tabular-nums">{pct.toFixed(0)}%</p>
+          </div>
+          <div className="text-right">
+            <p className="text-xs text-muted-foreground">Target</p>
+            <p className="font-semibold text-foreground tabular-nums">
+              {formatCurrency(g.targetAmount, currencySymbol)}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {g.deadline && <DeadlineNotice deadline={g.deadline} />}
+
+      {/* Add Funds */}
+      {isCompleted ? (
+        <div className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-green-100 dark:bg-green-900/30 text-xs sm:text-sm font-semibold text-green-700 dark:text-green-400">
+          <Check className="h-4 w-4" /> Goal Completed
+        </div>
+      ) : isAddingFunds ? (
+        <div className="space-y-2">
+          <p className="text-xs text-muted-foreground">
+            {formatCurrency(remaining, currencySymbol)} remaining to reach your target
+          </p>
+          <div className="flex gap-2">
+            <Input
+              type="number"
+              step="0.01"
+              min="0"
+              max={remaining}
+              placeholder="Amount"
+              value={addFundsAmount}
+              onChange={(e) => onChangeAddFundsAmount(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') onSubmitAddFunds(g.id);
+                if (e.key === 'Escape') onCancelAddFunds();
+              }}
+              className="flex-1"
+              autoFocus
+              aria-label={`Amount to add to ${g.name}`}
+            />
+            <Button
+              size="sm"
+              onClick={() => onSubmitAddFunds(g.id)}
+              disabled={!addFundsAmount || Number(addFundsAmount) <= 0}
+            >
+              Add
+            </Button>
+          </div>
+          <Button size="sm" variant="outline" onClick={onCancelAddFunds} className="w-full">
+            Cancel
+          </Button>
+        </div>
+      ) : (
+        <Button size="sm" onClick={() => onOpenAddFunds(g.id)} className="w-full">
+          Add Funds
+        </Button>
+      )}
+    </Card>
+  );
+}
+
+// ---- Page -------------------------------------------------------------
 
 export default function Goals() {
   const { data, addGoal, updateGoal, deleteGoal } = useApp();
@@ -26,10 +231,10 @@ export default function Goals() {
     setIsModalOpen(true);
   };
 
-  const handleEditClick = (goal: SavingsGoal) => {
+  const handleEditClick = useCallback((goal: SavingsGoal) => {
     setEditingGoal(goal);
     setIsModalOpen(true);
-  };
+  }, []);
 
   const handleSubmit = (goal: SavingsGoal) => {
     if (editingGoal) {
@@ -39,48 +244,58 @@ export default function Goals() {
     }
   };
 
-  const handleDelete = (id: string) => {
-    deleteGoal(id);
-    setDeleteConfirm(null);
-  };
+  const handleDelete = useCallback(
+    (id: string) => {
+      deleteGoal(id);
+      setDeleteConfirm(null);
+    },
+    [deleteGoal]
+  );
 
-  const handleAddFunds = (goalId: string) => {
-    const amount = Number(addingFundsAmount);
-    if (!amount || amount <= 0) return;
+  // Switching to a different goal's "Add Funds" form without explicitly
+  // cancelling the previous one used to carry over the stale amount typed
+  // into the last goal's input. Resetting here guarantees a clean form.
+  const handleOpenAddFunds = useCallback((goalId: string) => {
+    setAddingFundsAmount('');
+    setAddingFundsGoalId(goalId);
+  }, []);
 
-    const goal = goals.find(g => g.id === goalId);
-    if (goal) {
-      const newAmount = Math.min(
-        goal.currentAmount + amount,
-        goal.targetAmount
-      );
-      updateGoal(goalId, { currentAmount: newAmount });
-      setAddingFundsGoalId(null);
-      setAddingFundsAmount('');
-    }
-  };
+  const handleCancelAddFunds = useCallback(() => {
+    setAddingFundsGoalId(null);
+    setAddingFundsAmount('');
+  }, []);
 
-  const getTotalProgress = () => {
-    if (goals.length === 0) return 0;
-    const totalCurrent = goals.reduce((sum, g) => sum + g.currentAmount, 0);
-    const totalTarget = goals.reduce((sum, g) => sum + g.targetAmount, 0);
-    return (totalCurrent / totalTarget) * 100;
-  };
+  const handleAddFunds = useCallback(
+    (goalId: string) => {
+      const amount = Number(addingFundsAmount);
+      if (!amount || amount <= 0) return;
+
+      const goal = goals.find((g) => g.id === goalId);
+      if (goal) {
+        const newAmount = Math.min(goal.currentAmount + amount, goal.targetAmount);
+        updateGoal(goalId, { currentAmount: newAmount });
+        setAddingFundsGoalId(null);
+        setAddingFundsAmount('');
+      }
+    },
+    [addingFundsAmount, goals, updateGoal]
+  );
+
+  // Guards against a divide-by-zero (NaN%) if every goal somehow has a
+  // targetAmount of 0, and avoids three separate `.reduce` passes over
+  // `goals` on every render for the totals shown in the JSX below.
+  const { totalCurrent, totalTarget, overallProgress } = useMemo(() => {
+    const totalCurrent = goals.reduce((s, g) => s + g.currentAmount, 0);
+    const totalTarget = goals.reduce((s, g) => s + g.targetAmount, 0);
+    const overallProgress = totalTarget > 0 ? (totalCurrent / totalTarget) * 100 : 0;
+    return { totalCurrent, totalTarget, overallProgress };
+  }, [goals]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
   };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: { opacity: 1, y: 0 },
-  };
+  const itemVariants = { hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } };
 
   return (
     <motion.div
@@ -103,7 +318,6 @@ export default function Goals() {
         </Button>
       </div>
 
-      {/* Modal */}
       <GoalsModal
         isOpen={isModalOpen}
         onClose={() => {
@@ -120,22 +334,18 @@ export default function Goals() {
           <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20 p-6 sm:p-8">
             <div className="space-y-4">
               <div>
-                <p className="text-sm text-muted-foreground font-semibold uppercase tracking-wide">Overall Progress</p>
-                <h2 className="text-3xl font-bold text-foreground mt-2">
-                  {getTotalProgress().toFixed(1)}%
+                <p className="text-sm text-muted-foreground font-semibold uppercase tracking-wide">
+                  Overall Progress
+                </p>
+                <h2 className="text-3xl font-bold text-foreground mt-2 tabular-nums">
+                  {overallProgress.toFixed(1)}%
                 </h2>
               </div>
               <div className="space-y-2">
-                <Progress value={getTotalProgress()} className="h-3" />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>
-                    {sym}
-                    {goals.reduce((s, g) => s + g.currentAmount, 0).toFixed(2)}
-                  </span>
-                  <span>
-                    {sym}
-                    {goals.reduce((s, g) => s + g.targetAmount, 0).toFixed(2)}
-                  </span>
+                <Progress value={overallProgress} className="h-3" />
+                <div className="flex justify-between text-xs text-muted-foreground tabular-nums">
+                  <span>{formatCurrency(totalCurrent, sym)}</span>
+                  <span>{formatCurrency(totalTarget, sym)}</span>
                 </div>
               </div>
             </div>
@@ -148,175 +358,36 @@ export default function Goals() {
             animate="visible"
             className="grid grid-cols-1 md:grid-cols-2 gap-4"
           >
-            {goals.map(g => {
-              const pct = Math.min((g.currentAmount / g.targetAmount) * 100, 100);
-              const daysLeft = g.deadline
-                ? Math.max(
-                    0,
-                    Math.ceil(
-                      (new Date(g.deadline).getTime() - Date.now()) / 86400000
-                    )
-                  )
-                : null;
-              const isCompleted = g.currentAmount >= g.targetAmount;
-
-              return (
-                <motion.div key={g.id} variants={itemVariants}>
-                  <Card className="p-6 hover:shadow-md transition-shadow relative group">
-                    {/* Delete Confirm Modal */}
-                    {deleteConfirm === g.id && (
-                      <div className="absolute inset-0 bg-black/50 rounded-lg z-10 flex flex-col items-center justify-center gap-4 p-4">
-                        <div className="text-center">
-                          <p className="text-sm font-semibold text-white">Delete goal?</p>
-                          <p className="text-xs text-white/75 mt-1">This action cannot be undone</p>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => setDeleteConfirm(null)}
-                            className="text-white border-white hover:bg-white/10"
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => handleDelete(g.id)}
-                          >
-                            Delete
-                          </Button>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Header */}
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <h3 className="text-lg font-semibold text-foreground">{g.name}</h3>
-                        {isCompleted && (
-                          <span className="inline-flex items-center gap-1 mt-1 px-2 py-1 rounded text-xs font-semibold bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">
-                            <Check className="h-3 w-3" /> Completed
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button
-                          onClick={() => handleEditClick(g)}
-                          className="p-2 rounded-lg hover:bg-muted transition-colors"
-                          title="Edit goal"
-                        >
-                          <Target className="h-4 w-4 text-muted-foreground" />
-                        </button>
-                        <button
-                          onClick={() => setDeleteConfirm(g.id)}
-                          className="p-2 rounded-lg hover:bg-muted transition-colors"
-                          title="Delete goal"
-                        >
-                          <Trash2 className="h-4 w-4 text-destructive" />
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Progress Section */}
-                    <div className="space-y-3 mb-4 pb-4 border-b border-border">
-                      <Progress value={pct} className="h-3" />
-                      <div className="flex justify-between text-sm">
-                        <div>
-                          <p className="text-xs text-muted-foreground">Current</p>
-                          <p className="font-semibold text-foreground">
-                            {sym}
-                            {g.currentAmount.toFixed(2)}
-                          </p>
-                        </div>
-                        <div className="text-center">
-                          <p className="text-xs text-muted-foreground">Progress</p>
-                          <p className="font-semibold text-primary">{pct.toFixed(0)}%</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-xs text-muted-foreground">Target</p>
-                          <p className="font-semibold text-foreground">
-                            {sym}
-                            {g.targetAmount.toFixed(2)}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Deadline */}
-                    {daysLeft !== null && (
-                      <div className={`text-xs mb-4 ${daysLeft === 0 ? 'text-destructive font-semibold' : 'text-muted-foreground'}`}>
-                        {daysLeft === 0
-                          ? '⚠️ Deadline is today'
-                          : daysLeft > 0
-                          ? `📅 ${daysLeft} day${daysLeft !== 1 ? 's' : ''} remaining`
-                          : '⏰ Deadline passed'}
-                      </div>
-                    )}
-
-                    {/* Add Funds Section */}
-                    {!isCompleted && addingFundsGoalId === g.id ? (
-                      <div className="space-y-2">
-                        <div className="flex gap-2">
-                          <Input
-                            type="number"
-                            step="0.01"
-                            placeholder="Amount"
-                            value={addingFundsAmount}
-                            onChange={e => setAddingFundsAmount(e.target.value)}
-                            className="flex-1"
-                            autoFocus
-                          />
-                          <Button
-                            size="sm"
-                            onClick={() => handleAddFunds(g.id)}
-                            disabled={!addingFundsAmount || Number(addingFundsAmount) <= 0}
-                          >
-                            Add
-                          </Button>
-                        </div>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => {
-                            setAddingFundsGoalId(null);
-                            setAddingFundsAmount('');
-                          }}
-                          className="w-full"
-                        >
-                          Cancel
-                        </Button>
-                      </div>
-                    ) : (
-                      <Button
-                        size="sm"
-                        variant={isCompleted ? 'outline' : 'default'}
-                        onClick={() => setAddingFundsGoalId(g.id)}
-                        className="w-full"
-                        disabled={isCompleted}
-                      >
-                        {isCompleted ? (
-                          <span className="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-green-100 dark:bg-green-900/30 text-xs sm:text-sm font-semibold text-green-700 dark:text-green-400">
-                            <Check className="h-4 w-4" /> Goal Completed
-                          </span>
-                        ) : (
-                          'Add Funds'
-                        )}
-                      </Button>
-                    )}
-                  </Card>
-                </motion.div>
-              );
-            })}
+            {goals.map((g) => (
+              <motion.div key={g.id} variants={itemVariants}>
+                <GoalCard
+                  goal={g}
+                  currencySymbol={sym}
+                  onEdit={handleEditClick}
+                  onRequestDelete={setDeleteConfirm}
+                  onCancelDelete={() => setDeleteConfirm(null)}
+                  onConfirmDelete={handleDelete}
+                  isConfirmingDelete={deleteConfirm === g.id}
+                  isAddingFunds={addingFundsGoalId === g.id}
+                  addFundsAmount={addingFundsAmount}
+                  onOpenAddFunds={handleOpenAddFunds}
+                  onChangeAddFundsAmount={setAddingFundsAmount}
+                  onSubmitAddFunds={handleAddFunds}
+                  onCancelAddFunds={handleCancelAddFunds}
+                />
+              </motion.div>
+            ))}
           </motion.div>
         </>
       )}
 
       {/* Empty State */}
       {goals.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-12 px-4">
-          <Target className="h-12 w-12 text-muted-foreground/20 mb-4" />
-          <h3 className="text-lg font-semibold text-muted-foreground mb-2">No savings goals yet</h3>
+        <div className="flex flex-col items-center justify-center py-16 px-4 border border-dashed border-border rounded-xl">
+          <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center mb-4">
+            <Target className="h-7 w-7 text-muted-foreground/40" />
+          </div>
+          <h3 className="text-lg font-semibold text-foreground mb-2">No savings goals yet</h3>
           <p className="text-sm text-muted-foreground text-center max-w-sm mb-6">
             Set your first financial goal and start working towards it
           </p>
@@ -334,7 +405,8 @@ export default function Goals() {
           <div>
             <p className="text-sm font-semibold text-blue-900 dark:text-blue-100">Pro Tip</p>
             <p className="text-sm text-blue-800 dark:text-blue-200 mt-0.5">
-              Set realistic, time-bound goals. Break down large goals into smaller milestones to stay motivated and track progress effectively.
+              Set realistic, time-bound goals. Break down large goals into smaller milestones to stay motivated and
+              track progress effectively.
             </p>
           </div>
         </div>
