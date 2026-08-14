@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BaseModal } from './BaseModal';
 import { ColorPicker } from './ColorPicker';
 import { IconPicker } from './IconPicker';
@@ -23,12 +23,31 @@ export function CategoriesModal({
   onSubmit,
   editingCategory,
 }: CategoriesModalProps) {
-  const [name, setName] = useState(editingCategory?.name || '');
-  const [icon, setIcon] = useState(editingCategory?.icon || 'Shopping');
-  const [color, setColor] = useState(editingCategory?.color || '25 95% 53%');
-  const [type, setType] = useState<'income' | 'expense' | 'both'>(editingCategory?.type || 'expense');
+  const [name, setName] = useState('');
+  const [icon, setIcon] = useState('Shopping');
+  const [color, setColor] = useState('25 95% 53%');
+  const [type, setType] = useState<'income' | 'expense' | 'both'>('expense');
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Update form when editing a category or resetting for new category
+  useEffect(() => {
+    if (isOpen) {
+      if (editingCategory) {
+        setName(editingCategory.name);
+        setIcon(editingCategory.icon);
+        setColor(editingCategory.color);
+        setType(editingCategory.type);
+      } else {
+        // Reset for new category
+        setName('');
+        setIcon('Shopping');
+        setColor('25 95% 53%');
+        setType('expense');
+      }
+      setErrors({});
+    }
+  }, [editingCategory, isOpen]);
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
