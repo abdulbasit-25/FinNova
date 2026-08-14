@@ -15,6 +15,9 @@ import {
   Tag,
   Code2,
   CalendarClock,
+  Download,
+  Smartphone,
+  ShieldCheck,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -89,6 +92,75 @@ export default function About() {
           </p>
         </div>
       </motion.section>
+
+      <motion.section
+        className="relative overflow-hidden rounded-[28px] border border-border/80 bg-gradient-to-br from-primary/10 via-background to-accent/10 p-6 sm:p-8 shadow-lg shadow-primary/5"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={fadeUp}
+        transition={{ duration: 0.5, delay: 0.1 }}
+      >
+        <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-primary/10 blur-3xl" />
+        <div className="absolute -bottom-10 left-10 h-28 w-28 rounded-full bg-accent/10 blur-3xl" />
+
+        <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="space-y-4">
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+              <Download className="h-3.5 w-3.5" />
+              APK Available
+            </div>
+
+            <div className="space-y-2">
+              <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                Install FinNova on Android
+              </h2>
+              <p className="max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+                Download the latest FinNova APK and take your budget, spending insights,
+                and financial planning with you wherever you go.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              <Button
+                size="lg"
+                onClick={() =>
+                  window.open(
+                    'https://drive.google.com/file/d/1ZawANOFho0W4GgwsKifuQ-FTQ4uCpweq/view',
+                    '_blank',
+                    'noopener,noreferrer',
+                  )
+                }
+                className="gap-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/30"
+              >
+                <Download className="h-4 w-4" />
+                Download APK
+              </Button>
+
+              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-1.5 text-xs font-medium text-muted-foreground">
+                <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
+                Safe and ready to install
+              </div>
+            </div>
+          </div>
+
+          <div className="relative flex items-center justify-center">
+            <div className="absolute inset-0 rounded-[30px] bg-gradient-to-br from-primary/20 to-accent/20 blur-2xl" />
+            <div className="relative flex h-32 w-24 items-center justify-center rounded-[28px] border border-border/80 bg-card/80 shadow-2xl shadow-primary/10 backdrop-blur-xl">
+              <div className="flex h-full w-full flex-col items-center justify-center gap-3 rounded-[24px] bg-gradient-to-b from-primary/10 to-background p-3">
+                <Smartphone className="h-10 w-10 text-primary" />
+                <div className="text-center">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                    Android
+                  </p>
+                  <p className="text-lg font-bold text-foreground">FinNova</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.section>
+
       <motion.section
         className="glass-card p-6 sm:p-8 rounded-2xl space-y-6
                    relative overflow-hidden
