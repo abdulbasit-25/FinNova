@@ -190,7 +190,7 @@
     {
       "id": "cat-food",
       "name": "Food",
-      "icon": "UtensilsCrossed",
+      "icon": "Food",
       "color": "25 95% 53%",
       "type": "expense",
       "isDefault": true
@@ -198,7 +198,7 @@
     {
       "id": "cat-bills",
       "name": "Bills",
-      "icon": "Receipt",
+      "icon": "Electricity",
       "color": "0 84% 60%",
       "type": "expense",
       "isDefault": true
@@ -206,7 +206,7 @@
     {
       "id": "cat-shopping",
       "name": "Shopping",
-      "icon": "ShoppingBag",
+      "icon": "Shopping",
       "color": "262 83% 58%",
       "type": "expense",
       "isDefault": true
@@ -214,7 +214,7 @@
     {
       "id": "cat-transport",
       "name": "Transport",
-      "icon": "Car",
+      "icon": "Travel",
       "color": "217 91% 60%",
       "type": "expense",
       "isDefault": true
@@ -222,7 +222,7 @@
     {
       "id": "cat-entertainment",
       "name": "Entertainment",
-      "icon": "Gamepad2",
+      "icon": "Entertainment",
       "color": "330 81% 60%",
       "type": "expense",
       "isDefault": true
@@ -230,7 +230,7 @@
     {
       "id": "cat-health",
       "name": "Health",
-      "icon": "Heart",
+      "icon": "Medicine",
       "color": "142 71% 45%",
       "type": "expense",
       "isDefault": true
@@ -238,7 +238,7 @@
     {
       "id": "cat-salary",
       "name": "Salary",
-      "icon": "Briefcase",
+      "icon": "Work",
       "color": "142 71% 45%",
       "type": "income",
       "isDefault": true
@@ -246,7 +246,7 @@
     {
       "id": "cat-business",
       "name": "Business",
-      "icon": "Building2",
+      "icon": "Income",
       "color": "217 91% 60%",
       "type": "income",
       "isDefault": true
@@ -254,7 +254,7 @@
     {
       "id": "cat-freelance",
       "name": "Freelance",
-      "icon": "Laptop",
+      "icon": "Work",
       "color": "38 92% 50%",
       "type": "income",
       "isDefault": true
@@ -262,7 +262,7 @@
     {
       "id": "cat-other",
       "name": "Other",
-      "icon": "MoreHorizontal",
+      "icon": "Other",
       "color": "220 10% 46%",
       "type": "both",
       "isDefault": true
@@ -274,7 +274,7 @@
       "name": "Cash",
       "type": "cash",
       "balance": 2120,
-      "icon": "Banknote",
+      "icon": "Wallet",
       "color": "142 71% 45%"
     },
     {
@@ -282,7 +282,7 @@
       "name": "Bank Account",
       "type": "bank",
       "balance": 8550,
-      "icon": "Landmark",
+      "icon": "Home",
       "color": "217 91% 60%"
     },
     {
@@ -290,7 +290,7 @@
       "name": "Credit Card",
       "type": "credit_card",
       "balance": -4345,
-      "icon": "CreditCard",
+      "icon": "Card",
       "color": "262 83% 58%"
     },
     {

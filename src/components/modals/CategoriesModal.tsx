@@ -25,7 +25,7 @@ export function CategoriesModal({
 }: CategoriesModalProps) {
   const [name, setName] = useState(editingCategory?.name || '');
   const [icon, setIcon] = useState(editingCategory?.icon || 'Shopping');
-  const [color, setColor] = useState(editingCategory?.color || 'hsl(0, 84%, 60%)');
+  const [color, setColor] = useState(editingCategory?.color || '25 95% 53%');
   const [type, setType] = useState<'income' | 'expense' | 'both'>(editingCategory?.type || 'expense');
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -78,7 +78,7 @@ export function CategoriesModal({
   const resetForm = () => {
     setName('');
     setIcon('Shopping');
-    setColor('hsl(0, 84%, 60%)');
+    setColor('25 95% 53%');
     setType('expense');
     setErrors({});
   };
