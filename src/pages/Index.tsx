@@ -67,7 +67,7 @@ const Index = () => {
     >
       {/* Header */}
       <motion.div variants={itemVariants}>
-        <h1 className="text-lg sm:text-2xl font-bold text-foreground">Dashboard V1</h1>
+        <h1 className="text-lg sm:text-2xl font-bold text-foreground">Dashboard</h1>
         <p className="text-sm text-muted-foreground">
           {greeting} • Here's your financial overview
         </p>
