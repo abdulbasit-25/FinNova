@@ -1,0 +1,459 @@
+{
+  "transactions": [
+    {
+      "id": "txn-1",
+      "type": "income",
+      "amount": 5000,
+      "categoryId": "cat-salary",
+      "date": "2026-08-01",
+      "time": "09:00",
+      "paymentMethod": "bank_transfer",
+      "accountId": "acc-bank",
+      "notes": "Monthly salary",
+      "isRecurring": true,
+      "recurringId": "recur-1",
+      "createdAt": "2026-08-01T09:00:00Z"
+    },
+    {
+      "id": "txn-2",
+      "type": "expense",
+      "amount": 450,
+      "categoryId": "cat-food",
+      "date": "2026-08-02",
+      "time": "12:30",
+      "paymentMethod": "card",
+      "accountId": "acc-credit",
+      "notes": "Weekly groceries",
+      "isRecurring": false,
+      "createdAt": "2026-08-02T12:30:00Z"
+    },
+    {
+      "id": "txn-3",
+      "type": "expense",
+      "amount": 2500,
+      "categoryId": "cat-bills",
+      "date": "2026-08-03",
+      "time": "10:00",
+      "paymentMethod": "bank_transfer",
+      "accountId": "acc-bank",
+      "notes": "Rent payment",
+      "isRecurring": true,
+      "recurringId": "recur-2",
+      "createdAt": "2026-08-03T10:00:00Z"
+    },
+    {
+      "id": "txn-4",
+      "type": "expense",
+      "amount": 120,
+      "categoryId": "cat-transport",
+      "date": "2026-08-04",
+      "time": "08:15",
+      "paymentMethod": "cash",
+      "accountId": "acc-cash",
+      "notes": "Taxi and bus fare",
+      "isRecurring": false,
+      "createdAt": "2026-08-04T08:15:00Z"
+    },
+    {
+      "id": "txn-5",
+      "type": "expense",
+      "amount": 1200,
+      "categoryId": "cat-shopping",
+      "date": "2026-08-05",
+      "time": "14:45",
+      "paymentMethod": "card",
+      "accountId": "acc-credit",
+      "notes": "Clothes shopping",
+      "isRecurring": false,
+      "createdAt": "2026-08-05T14:45:00Z"
+    },
+    {
+      "id": "txn-6",
+      "type": "expense",
+      "amount": 350,
+      "categoryId": "cat-entertainment",
+      "date": "2026-08-06",
+      "time": "19:30",
+      "paymentMethod": "card",
+      "accountId": "acc-credit",
+      "notes": "Movie tickets and dinner",
+      "isRecurring": false,
+      "createdAt": "2026-08-06T19:30:00Z"
+    },
+    {
+      "id": "txn-7",
+      "type": "expense",
+      "amount": 650,
+      "categoryId": "cat-bills",
+      "date": "2026-08-07",
+      "time": "11:00",
+      "paymentMethod": "bank_transfer",
+      "accountId": "acc-bank",
+      "notes": "Electricity and water bill",
+      "isRecurring": false,
+      "createdAt": "2026-08-07T11:00:00Z"
+    },
+    {
+      "id": "txn-8",
+      "type": "expense",
+      "amount": 280,
+      "categoryId": "cat-food",
+      "date": "2026-08-08",
+      "time": "18:00",
+      "paymentMethod": "cash",
+      "accountId": "acc-cash",
+      "notes": "Restaurant dinner",
+      "isRecurring": false,
+      "createdAt": "2026-08-08T18:00:00Z"
+    },
+    {
+      "id": "txn-9",
+      "type": "expense",
+      "amount": 85,
+      "categoryId": "cat-health",
+      "date": "2026-08-09",
+      "time": "10:30",
+      "paymentMethod": "card",
+      "accountId": "acc-credit",
+      "notes": "Pharmacy",
+      "isRecurring": false,
+      "createdAt": "2026-08-09T10:30:00Z"
+    },
+    {
+      "id": "txn-10",
+      "type": "income",
+      "amount": 1500,
+      "categoryId": "cat-freelance",
+      "date": "2026-08-10",
+      "time": "15:00",
+      "paymentMethod": "bank_transfer",
+      "accountId": "acc-bank",
+      "notes": "Freelance project payment",
+      "isRecurring": false,
+      "createdAt": "2026-08-10T15:00:00Z"
+    },
+    {
+      "id": "txn-11",
+      "type": "expense",
+      "amount": 520,
+      "categoryId": "cat-shopping",
+      "date": "2026-08-11",
+      "time": "16:20",
+      "paymentMethod": "card",
+      "accountId": "acc-credit",
+      "notes": "Online shopping",
+      "isRecurring": false,
+      "createdAt": "2026-08-11T16:20:00Z"
+    },
+    {
+      "id": "txn-12",
+      "type": "transfer",
+      "amount": 1000,
+      "categoryId": "cat-other",
+      "date": "2026-08-12",
+      "time": "09:30",
+      "paymentMethod": "bank_transfer",
+      "accountId": "acc-bank",
+      "toAccountId": "acc-cash",
+      "notes": "Withdrawal for cash needs",
+      "isRecurring": false,
+      "createdAt": "2026-08-12T09:30:00Z"
+    },
+    {
+      "id": "txn-13",
+      "type": "expense",
+      "amount": 380,
+      "categoryId": "cat-transport",
+      "date": "2026-08-13",
+      "time": "07:45",
+      "paymentMethod": "cash",
+      "accountId": "acc-cash",
+      "notes": "Gas and maintenance",
+      "isRecurring": false,
+      "createdAt": "2026-08-13T07:45:00Z"
+    },
+    {
+      "id": "txn-14",
+      "type": "expense",
+      "amount": 95,
+      "categoryId": "cat-food",
+      "date": "2026-08-14",
+      "time": "12:00",
+      "paymentMethod": "cash",
+      "accountId": "acc-cash",
+      "notes": "Lunch with friends",
+      "isRecurring": false,
+      "createdAt": "2026-08-14T12:00:00Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat-food",
+      "name": "Food",
+      "icon": "UtensilsCrossed",
+      "color": "25 95% 53%",
+      "type": "expense",
+      "isDefault": true
+    },
+    {
+      "id": "cat-bills",
+      "name": "Bills",
+      "icon": "Receipt",
+      "color": "0 84% 60%",
+      "type": "expense",
+      "isDefault": true
+    },
+    {
+      "id": "cat-shopping",
+      "name": "Shopping",
+      "icon": "ShoppingBag",
+      "color": "262 83% 58%",
+      "type": "expense",
+      "isDefault": true
+    },
+    {
+      "id": "cat-transport",
+      "name": "Transport",
+      "icon": "Car",
+      "color": "217 91% 60%",
+      "type": "expense",
+      "isDefault": true
+    },
+    {
+      "id": "cat-entertainment",
+      "name": "Entertainment",
+      "icon": "Gamepad2",
+      "color": "330 81% 60%",
+      "type": "expense",
+      "isDefault": true
+    },
+    {
+      "id": "cat-health",
+      "name": "Health",
+      "icon": "Heart",
+      "color": "142 71% 45%",
+      "type": "expense",
+      "isDefault": true
+    },
+    {
+      "id": "cat-salary",
+      "name": "Salary",
+      "icon": "Briefcase",
+      "color": "142 71% 45%",
+      "type": "income",
+      "isDefault": true
+    },
+    {
+      "id": "cat-business",
+      "name": "Business",
+      "icon": "Building2",
+      "color": "217 91% 60%",
+      "type": "income",
+      "isDefault": true
+    },
+    {
+      "id": "cat-freelance",
+      "name": "Freelance",
+      "icon": "Laptop",
+      "color": "38 92% 50%",
+      "type": "income",
+      "isDefault": true
+    },
+    {
+      "id": "cat-other",
+      "name": "Other",
+      "icon": "MoreHorizontal",
+      "color": "220 10% 46%",
+      "type": "both",
+      "isDefault": true
+    }
+  ],
+  "accounts": [
+    {
+      "id": "acc-cash",
+      "name": "Cash",
+      "type": "cash",
+      "balance": 2120,
+      "icon": "Banknote",
+      "color": "142 71% 45%"
+    },
+    {
+      "id": "acc-bank",
+      "name": "Bank Account",
+      "type": "bank",
+      "balance": 8550,
+      "icon": "Landmark",
+      "color": "217 91% 60%"
+    },
+    {
+      "id": "acc-credit",
+      "name": "Credit Card",
+      "type": "credit_card",
+      "balance": -4345,
+      "icon": "CreditCard",
+      "color": "262 83% 58%"
+    },
+    {
+      "id": "acc-wallet",
+      "name": "Digital Wallet",
+      "type": "wallet",
+      "balance": 500,
+      "icon": "Wallet",
+      "color": "38 92% 50%"
+    }
+  ],
+  "budgets": [
+    {
+      "id": "budget-1",
+      "categoryId": "cat-food",
+      "amount": 800,
+      "month": "2026-08"
+    },
+    {
+      "id": "budget-2",
+      "categoryId": "cat-shopping",
+      "amount": 1500,
+      "month": "2026-08"
+    },
+    {
+      "id": "budget-3",
+      "categoryId": "cat-entertainment",
+      "amount": 500,
+      "month": "2026-08"
+    },
+    {
+      "id": "budget-4",
+      "categoryId": "cat-transport",
+      "amount": 600,
+      "month": "2026-08"
+    },
+    {
+      "id": "budget-5",
+      "categoryId": "cat-health",
+      "amount": 300,
+      "month": "2026-08"
+    },
+    {
+      "id": "budget-6",
+      "categoryId": null,
+      "amount": 6000,
+      "month": "2026-08"
+    }
+  ],
+  "goals": [
+    {
+      "id": "goal-1",
+      "name": "Emergency Fund",
+      "targetAmount": 15000,
+      "currentAmount": 5200,
+      "deadline": "2026-12-31",
+      "icon": "Piggy Bank",
+      "color": "142 71% 45%"
+    },
+    {
+      "id": "goal-2",
+      "name": "Vacation",
+      "targetAmount": 8000,
+      "currentAmount": 2500,
+      "deadline": "2026-12-15",
+      "icon": "Plane",
+      "color": "217 91% 60%"
+    },
+    {
+      "id": "goal-3",
+      "name": "New Laptop",
+      "targetAmount": 2000,
+      "currentAmount": 1200,
+      "deadline": "2026-10-31",
+      "icon": "Laptop",
+      "color": "262 83% 58%"
+    },
+    {
+      "id": "goal-4",
+      "name": "Car Down Payment",
+      "targetAmount": 25000,
+      "currentAmount": 8500,
+      "deadline": "2027-06-30",
+      "icon": "Car",
+      "color": "38 92% 50%"
+    }
+  ],
+  "recurringRules": [
+    {
+      "id": "recur-1",
+      "transactionTemplate": {
+        "type": "income",
+        "amount": 5000,
+        "categoryId": "cat-salary",
+        "date": "2026-09-01",
+        "time": "09:00",
+        "paymentMethod": "bank_transfer",
+        "accountId": "acc-bank",
+        "notes": "Monthly salary",
+        "isRecurring": true
+      },
+      "frequency": "monthly",
+      "nextDate": "2026-09-01",
+      "isPaused": false
+    },
+    {
+      "id": "recur-2",
+      "transactionTemplate": {
+        "type": "expense",
+        "amount": 2500,
+        "categoryId": "cat-bills",
+        "date": "2026-09-03",
+        "time": "10:00",
+        "paymentMethod": "bank_transfer",
+        "accountId": "acc-bank",
+        "notes": "Rent payment",
+        "isRecurring": true
+      },
+      "frequency": "monthly",
+      "nextDate": "2026-09-03",
+      "isPaused": false
+    },
+    {
+      "id": "recur-3",
+      "transactionTemplate": {
+        "type": "expense",
+        "amount": 150,
+        "categoryId": "cat-bills",
+        "date": "2026-08-20",
+        "time": "14:00",
+        "paymentMethod": "bank_transfer",
+        "accountId": "acc-bank",
+        "notes": "Internet bill",
+        "isRecurring": true
+      },
+      "frequency": "monthly",
+      "nextDate": "2026-09-20",
+      "isPaused": false
+    },
+    {
+      "id": "recur-4",
+      "transactionTemplate": {
+        "type": "expense",
+        "amount": 200,
+        "categoryId": "cat-entertainment",
+        "date": "2026-08-15",
+        "time": "00:00",
+        "paymentMethod": "card",
+        "accountId": "acc-credit",
+        "notes": "Streaming subscription",
+        "isRecurring": true
+      },
+      "frequency": "monthly",
+      "nextDate": "2026-09-15",
+      "isPaused": false
+    }
+  ],
+  "settings": {
+    "currency": "PKR",
+    "currencySymbol": "₨",
+    "theme": "light",
+    "accentColor": "blue",
+    "language": "en",
+    "soundEnabled": false
+  }
+}
