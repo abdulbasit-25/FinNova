@@ -347,7 +347,7 @@
       "targetAmount": 15000,
       "currentAmount": 5200,
       "deadline": "2026-12-31",
-      "icon": "Piggy Bank",
+      "icon": "Wallet",
       "color": "142 71% 45%"
     },
     {
@@ -356,7 +356,7 @@
       "targetAmount": 8000,
       "currentAmount": 2500,
       "deadline": "2026-12-15",
-      "icon": "Plane",
+      "icon": "Building2",
       "color": "217 91% 60%"
     },
     {
