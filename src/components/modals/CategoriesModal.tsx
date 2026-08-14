@@ -6,9 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { AlertCircle, Check } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { Category } from '@/types/expense-tracker';
-import { generateId } from '@/lib/helpers';
+import { generateId, getIconComponent } from '@/lib/helpers';
 
 interface CategoriesModalProps {
   isOpen: boolean;
@@ -161,10 +161,13 @@ export function CategoriesModal({
         {icon && color && (
           <div className="flex items-center gap-4 p-4 rounded-lg bg-muted/50 border border-border">
             <div
-              className="w-12 h-12 rounded-lg flex items-center justify-center text-2xl"
+              className="w-12 h-12 rounded-lg flex items-center justify-center"
               style={{ backgroundColor: color }}
             >
-              <Check className="h-6 w-6 text-white" />
+              {(() => {
+                const IconComponent = getIconComponent(icon);
+                return <IconComponent className="h-6 w-6 text-white" />;
+              })()}
             </div>
             <div>
               <p className="font-semibold">{name || 'Category Name'}</p>
