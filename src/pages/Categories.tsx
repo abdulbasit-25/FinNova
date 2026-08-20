@@ -1,12 +1,25 @@
-import { useMemo, useState, useCallback } from 'react';
-import { useApp } from '@/contexts/AppContext';
-import { formatCurrency, getMonthKey, getTransactionsForMonth, getIconComponent } from '@/lib/helpers';
-import { CategoriesModal } from '@/components/modals/CategoriesModal';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Plus, Edit2, Trash2, AlertCircle, DollarSign, TrendingDown, Lightbulb } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Category, Transaction } from '@/types/expense-tracker';
+import { useMemo, useState, useCallback } from "react";
+import { useApp } from "@/contexts/AppContext";
+import {
+  formatCurrency,
+  getMonthKey,
+  getTransactionsForMonth,
+  getIconComponent,
+} from "@/lib/helpers";
+import { CategoriesModal } from "@/components/modals/CategoriesModal";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import {
+  Plus,
+  Edit2,
+  Trash2,
+  AlertCircle,
+  DollarSign,
+  TrendingDown,
+  Lightbulb,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Category, Transaction } from "@/types/expense-tracker";
 
 // ---- Monthly totals ----------------------------------------------------
 // One pass over this month's transactions instead of re-filtering the full
@@ -21,8 +34,8 @@ function useMonthlyTotals(monthTxns: Transaction[]) {
       return totals.get(id)!;
     };
     for (const t of monthTxns) {
-      if (t.type === 'expense') ensure(t.categoryId).expense += t.amount;
-      if (t.type === 'income') ensure(t.categoryId).income += t.amount;
+      if (t.type === "expense") ensure(t.categoryId).expense += t.amount;
+      if (t.type === "income") ensure(t.categoryId).income += t.amount;
     }
     return totals;
   }, [monthTxns]);
@@ -70,12 +83,16 @@ function CategoryCard({
             aria-label={`Delete ${c.name}?`}
             className="absolute inset-0 bg-black/60 backdrop-blur-[2px] rounded-lg z-10 flex flex-col items-center justify-center gap-4 p-4"
             onKeyDown={(e) => {
-              if (e.key === 'Escape') onCancelDelete();
+              if (e.key === "Escape") onCancelDelete();
             }}
           >
             <div className="text-center">
-              <p className="text-sm font-semibold text-white">Delete "{c.name}"?</p>
-              <p className="text-xs text-white/75 mt-1">This action cannot be undone</p>
+              <p className="text-sm font-semibold text-white">
+                Delete "{c.name}"?
+              </p>
+              <p className="text-xs text-white/75 mt-1">
+                This action cannot be undone
+              </p>
             </div>
             <div className="flex gap-2">
               <Button
@@ -87,7 +104,11 @@ function CategoryCard({
               >
                 Cancel
               </Button>
-              <Button size="sm" variant="destructive" onClick={() => onConfirmDelete(c.id)}>
+              <Button
+                size="sm"
+                variant="destructive"
+                onClick={() => onConfirmDelete(c.id)}
+              >
                 Delete
               </Button>
             </div>
@@ -127,7 +148,9 @@ function CategoryCard({
       <div className="space-y-3">
         <div>
           <h3 className="font-semibold text-foreground">{c.name}</h3>
-          <p className="text-xs text-muted-foreground capitalize">{c.type === 'both' ? 'Both' : c.type}</p>
+          <p className="text-xs text-muted-foreground capitalize">
+            {c.type === "both" ? "Both" : c.type}
+          </p>
         </div>
 
         <div className="bg-muted/50 rounded-lg p-3">
@@ -179,14 +202,19 @@ function CategorySection({
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
   };
-  const itemVariants = { hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } };
+  const itemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0 },
+  };
 
   return (
     <div className="space-y-3 sm:space-y-4">
       <h2 className="text-base sm:text-lg font-semibold text-foreground flex items-center gap-2">
         <Icon className="h-5 w-5" />
         <span>{title}</span>
-        <span className="text-xs sm:text-sm font-normal text-muted-foreground">({categories.length})</span>
+        <span className="text-xs sm:text-sm font-normal text-muted-foreground">
+          ({categories.length})
+        </span>
       </h2>
       <motion.div
         variants={containerVariants}
@@ -226,7 +254,10 @@ export default function Categories() {
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
-  const monthTxns = useMemo(() => getTransactionsForMonth(transactions, getMonthKey()), [transactions]);
+  const monthTxns = useMemo(
+    () => getTransactionsForMonth(transactions, getMonthKey()),
+    [transactions],
+  );
   const totals = useMonthlyTotals(monthTxns);
 
   const handleAddClick = () => {
@@ -252,20 +283,26 @@ export default function Categories() {
       deleteCategory(id);
       setDeleteConfirm(null);
     },
-    [deleteCategory]
+    [deleteCategory],
   );
 
   const expenseCategories = useMemo(
-    () => categories.filter((c) => c.type === 'expense' || c.type === 'both'),
-    [categories]
+    () => categories.filter((c) => c.type === "expense" || c.type === "both"),
+    [categories],
   );
   const incomeCategories = useMemo(
-    () => categories.filter((c) => c.type === 'income' || c.type === 'both'),
-    [categories]
+    () => categories.filter((c) => c.type === "income" || c.type === "both"),
+    [categories],
   );
 
-  const expenseFor = useCallback((id: string) => totals.get(id)?.expense ?? 0, [totals]);
-  const incomeFor = useCallback((id: string) => totals.get(id)?.income ?? 0, [totals]);
+  const expenseFor = useCallback(
+    (id: string) => totals.get(id)?.expense ?? 0,
+    [totals],
+  );
+  const incomeFor = useCallback(
+    (id: string) => totals.get(id)?.income ?? 0,
+    [totals],
+  );
 
   return (
     <motion.div
@@ -277,7 +314,9 @@ export default function Categories() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-lg sm:text-3xl font-bold text-foreground">Categories</h1>
+          <h1 className="text-lg sm:text-3xl font-bold text-foreground">
+            Categories
+          </h1>
           <p className="text-sm text-muted-foreground mt-1">
             {categories.length} total • Manage your spending categories
           </p>
@@ -334,7 +373,9 @@ export default function Categories() {
           <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center mb-4">
             <AlertCircle className="h-7 w-7 text-muted-foreground/40" />
           </div>
-          <h3 className="text-lg font-semibold text-foreground mb-2">No categories yet</h3>
+          <h3 className="text-lg font-semibold text-foreground mb-2">
+            No categories yet
+          </h3>
           <p className="text-sm text-muted-foreground text-center max-w-sm mb-6">
             Create your first category to start organizing your finances
           </p>
@@ -350,10 +391,12 @@ export default function Categories() {
         <div className="flex gap-3">
           <Lightbulb className="h-5 w-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm font-semibold text-blue-900 dark:text-blue-100">Pro Tip</p>
+            <p className="text-sm font-semibold text-blue-900 dark:text-blue-100">
+              Pro Tip
+            </p>
             <p className="text-sm text-blue-800 dark:text-blue-200 mt-0.5">
-              Create categories that match your spending habits. You can set icons, colors, and apply them as
-              expense or income categories.
+              Create categories that match your spending habits. You can set
+              icons, colors, and apply them as expense or income categories.
             </p>
           </div>
         </div>
