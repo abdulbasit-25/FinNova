@@ -76,11 +76,17 @@ export default function MobileNav() {
             />
             <div>
               <div className="text-sm font-semibold">FinNova</div>
-              <div className="text-xs text-muted-foreground">Personal finance</div>
+              <div className="text-xs text-muted-foreground">
+                Personal finance
+              </div>
             </div>
           </div>
 
-          <button aria-label="Close navigation" onClick={() => setOpen(false)} className="p-2">
+          <button
+            aria-label="Close navigation"
+            onClick={() => setOpen(false)}
+            className="p-2"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -99,7 +105,11 @@ export default function MobileNav() {
           ))}
 
           <div className="mt-4 border-t border-border pt-4">
-            <Link to="/add" onClick={() => setOpen(false)} className="block w-full rounded-md bg-primary px-3 py-2 text-center text-sm font-medium text-primary-foreground">
+            <Link
+              to="/add"
+              onClick={() => setOpen(false)}
+              className="block w-full rounded-md bg-primary px-3 py-2 text-center text-sm font-medium text-primary-foreground"
+            >
               Add Transaction
             </Link>
           </div>
