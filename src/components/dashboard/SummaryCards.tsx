@@ -1,7 +1,12 @@
-import { TrendingUp, TrendingDown, Wallet, PiggyBank } from 'lucide-react';
-import { AnimatedCounter } from './AnimatedCounter';
-import { useApp } from '@/contexts/AppContext';
-import { getMonthKey, getTransactionsForMonth, getTotalIncome, getTotalExpenses } from '@/lib/helpers';
+import { TrendingUp, TrendingDown, Wallet, PiggyBank } from "lucide-react";
+import { AnimatedCounter } from "./AnimatedCounter";
+import { useApp } from "@/contexts/AppContext";
+import {
+  getMonthKey,
+  getTransactionsForMonth,
+  getTotalIncome,
+  getTotalExpenses,
+} from "@/lib/helpers";
 
 export function SummaryCards() {
   const { data } = useApp();
@@ -15,15 +20,35 @@ export function SummaryCards() {
   const savings = Math.max(0, balance);
 
   const cards = [
-    { label: 'Total Balance', value: balance, icon: Wallet, iconColor: 'text-primary' },
-    { label: 'Income', value: income, icon: TrendingUp, iconColor: 'text-success' },
-    { label: 'Expenses', value: expenses, icon: TrendingDown, iconColor: 'text-destructive' },
-    { label: 'Savings', value: savings, icon: PiggyBank, iconColor: 'text-warning' },
+    {
+      label: "Total Balance",
+      value: balance,
+      icon: Wallet,
+      iconColor: "text-primary",
+    },
+    {
+      label: "Income",
+      value: income,
+      icon: TrendingUp,
+      iconColor: "text-success",
+    },
+    {
+      label: "Expenses",
+      value: expenses,
+      icon: TrendingDown,
+      iconColor: "text-destructive",
+    },
+    {
+      label: "Savings",
+      value: savings,
+      icon: PiggyBank,
+      iconColor: "text-warning",
+    },
   ];
 
   return (
     <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 md:grid-cols-4">
-      {cards.map(card => (
+      {cards.map((card) => (
         <div key={card.label} className="glass-card p-3 sm:p-4 animate-fade-in">
           <div className="flex items-center justify-between mb-2 sm:mb-3">
             <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
