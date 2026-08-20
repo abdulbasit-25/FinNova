@@ -1,12 +1,19 @@
-import { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Plus, ArrowDownLeft, ArrowUpRight, Repeat, Receipt, type LucideIcon } from 'lucide-react';
-import { SummaryCards } from '@/components/dashboard/SummaryCards';
-import { RecentTransactions } from '@/components/dashboard/RecentTransactions';
-import { SpendingChart } from '@/components/dashboard/SpendingChart';
-import { WeeklyChart } from '@/components/dashboard/WeeklyChart';
-import { Button } from '@/components/ui/button';
+import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+  Plus,
+  ArrowDownLeft,
+  ArrowUpRight,
+  Repeat,
+  Receipt,
+  type LucideIcon,
+} from "lucide-react";
+import { SummaryCards } from "@/components/dashboard/SummaryCards";
+import { RecentTransactions } from "@/components/dashboard/RecentTransactions";
+import { SpendingChart } from "@/components/dashboard/SpendingChart";
+import { WeeklyChart } from "@/components/dashboard/WeeklyChart";
+import { Button } from "@/components/ui/button";
 
 // ---- Quick actions config --------------------------------------------------
 // Declarative list instead of four near-identical <Button> blocks — adding or
@@ -16,27 +23,42 @@ interface QuickAction {
   label: string;
   icon: LucideIcon;
   to: string;
-  variant: 'income' | 'expense' | 'neutral';
+  variant: "income" | "expense" | "neutral";
 }
 
 const QUICK_ACTIONS: QuickAction[] = [
-  { label: 'Add Income', icon: ArrowDownLeft, to: '/add?type=income', variant: 'income' },
-  { label: 'Add Expense', icon: ArrowUpRight, to: '/add?type=expense', variant: 'expense' },
-  { label: 'Transfer', icon: Repeat, to: '/add?type=transfer', variant: 'neutral' },
-  { label: 'Set Budget', icon: Receipt, to: '/budgets', variant: 'neutral' },
+  {
+    label: "Add Income",
+    icon: ArrowDownLeft,
+    to: "/add?type=income",
+    variant: "income",
+  },
+  {
+    label: "Add Expense",
+    icon: ArrowUpRight,
+    to: "/add?type=expense",
+    variant: "expense",
+  },
+  {
+    label: "Transfer",
+    icon: Repeat,
+    to: "/add?type=transfer",
+    variant: "neutral",
+  },
+  { label: "Set Budget", icon: Receipt, to: "/budgets", variant: "neutral" },
 ];
 
-const VARIANT_CLASSES: Record<QuickAction['variant'], string> = {
-  income: 'bg-success hover:bg-success/90 text-success-foreground',
-  expense: 'bg-destructive hover:bg-destructive/90 text-destructive-foreground',
-  neutral: '',
+const VARIANT_CLASSES: Record<QuickAction["variant"], string> = {
+  income: "bg-success hover:bg-success/90 text-success-foreground",
+  expense: "bg-destructive hover:bg-destructive/90 text-destructive-foreground",
+  neutral: "",
 };
 
 function getGreeting(hour: number) {
-  if (hour < 5) return 'Good night';
-  if (hour < 12) return 'Good morning';
-  if (hour < 18) return 'Good afternoon';
-  return 'Good evening';
+  if (hour < 5) return "Good night";
+  if (hour < 12) return "Good morning";
+  if (hour < 18) return "Good afternoon";
+  return "Good evening";
 }
 
 // ---- Page -------------------------------------------------------------
@@ -67,7 +89,9 @@ const Index = () => {
     >
       {/* Header */}
       <motion.div variants={itemVariants}>
-        <h1 className="text-lg sm:text-2xl font-bold text-foreground">Dashboard</h1>
+        <h1 className="text-lg sm:text-2xl font-bold text-foreground">
+          Dashboard
+        </h1>
         <p className="text-sm text-muted-foreground">
           {greeting} • Here's your financial overview
         </p>
@@ -79,12 +103,17 @@ const Index = () => {
       </motion.div>
 
       {/* Quick Actions */}
-      <motion.div variants={itemVariants} className="flex flex-wrap gap-2" role="group" aria-label="Quick actions">
+      <motion.div
+        variants={itemVariants}
+        className="flex flex-wrap gap-2"
+        role="group"
+        aria-label="Quick actions"
+      >
         {QUICK_ACTIONS.map(({ label, icon: Icon, to, variant }) => (
           <Button
             key={to}
             size="sm"
-            variant={variant === 'neutral' ? 'outline' : 'default'}
+            variant={variant === "neutral" ? "outline" : "default"}
             onClick={() => navigate(to)}
             className={`gap-1.5 ${VARIANT_CLASSES[variant]}`}
           >

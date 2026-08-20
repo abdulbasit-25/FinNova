@@ -1,7 +1,8 @@
-export type TransactionType = 'income' | 'expense' | 'transfer';
-export type PaymentMethod = 'cash' | 'card' | 'bank_transfer' | 'OnlinePayments' | 'other';
-export type RecurringFrequency = 'daily' | 'weekly' | 'monthly' | 'custom';
-export type AccentColor = 'blue' | 'green' | 'purple';
+export type TransactionType = "income" | "expense" | "transfer";
+export type PaymentMethod =
+  "cash" | "card" | "bank_transfer" | "OnlinePayments" | "other";
+export type RecurringFrequency = "daily" | "weekly" | "monthly" | "custom";
+export type AccentColor = "blue" | "green" | "purple";
 
 export interface Transaction {
   id: string;
@@ -24,14 +25,14 @@ export interface Category {
   name: string;
   icon: string; // lucide icon name
   color: string; // HSL string
-  type: 'income' | 'expense' | 'both';
+  type: "income" | "expense" | "both";
   isDefault: boolean;
 }
 
 export interface Account {
   id: string;
   name: string;
-  type: 'cash' | 'bank' | 'credit_card' | 'wallet' | 'custom';
+  type: "cash" | "bank" | "credit_card" | "wallet" | "custom";
   balance: number;
   icon: string;
   color: string;
@@ -56,7 +57,7 @@ export interface SavingsGoal {
 
 export interface RecurringRule {
   id: string;
-  transactionTemplate: Omit<Transaction, 'id' | 'createdAt'>;
+  transactionTemplate: Omit<Transaction, "id" | "createdAt">;
   frequency: RecurringFrequency;
   customDays?: number;
   nextDate: string;
@@ -66,7 +67,7 @@ export interface RecurringRule {
 export interface AppSettings {
   currency: string;
   currencySymbol: string;
-  theme: 'light' | 'dark' | 'system';
+  theme: "light" | "dark" | "system";
   accentColor: AccentColor;
   language: string;
   soundEnabled: boolean;

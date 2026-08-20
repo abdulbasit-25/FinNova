@@ -1,14 +1,14 @@
-import { useState, useMemo, useCallback } from 'react';
-import { useApp } from '@/contexts/AppContext';
-import { formatCurrency } from '@/lib/helpers';
-import { GoalsModal } from '@/components/modals/GoalsModal';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Progress } from '@/components/ui/progress';
-import { Plus, Edit2, Trash2, Target, Check, Lightbulb } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { SavingsGoal } from '@/types/expense-tracker';
+import { useState, useMemo, useCallback } from "react";
+import { useApp } from "@/contexts/AppContext";
+import { formatCurrency } from "@/lib/helpers";
+import { GoalsModal } from "@/components/modals/GoalsModal";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Progress } from "@/components/ui/progress";
+import { Plus, Edit2, Trash2, Target, Check, Lightbulb } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { SavingsGoal } from "@/types/expense-tracker";
 
 const MS_PER_DAY = 86_400_000;
 
@@ -27,14 +27,22 @@ function DeadlineNotice({ deadline }: { deadline: string }) {
   const daysLeft = daysUntil(deadline);
 
   if (daysLeft < 0) {
-    return <div className="text-xs mb-4 text-destructive font-semibold">⏰ Deadline passed</div>;
+    return (
+      <div className="text-xs mb-4 text-destructive font-semibold">
+        ⏰ Deadline passed
+      </div>
+    );
   }
   if (daysLeft === 0) {
-    return <div className="text-xs mb-4 text-destructive font-semibold">⚠️ Deadline is today</div>;
+    return (
+      <div className="text-xs mb-4 text-destructive font-semibold">
+        ⚠️ Deadline is today
+      </div>
+    );
   }
   return (
     <div className="text-xs mb-4 text-muted-foreground">
-      📅 {daysLeft} day{daysLeft !== 1 ? 's' : ''} remaining
+      📅 {daysLeft} day{daysLeft !== 1 ? "s" : ""} remaining
     </div>
   );
 }
@@ -87,12 +95,16 @@ function GoalCard({
             aria-label={`Delete ${g.name}?`}
             className="absolute inset-0 bg-black/60 backdrop-blur-[2px] rounded-lg z-10 flex flex-col items-center justify-center gap-4 p-4"
             onKeyDown={(e) => {
-              if (e.key === 'Escape') onCancelDelete();
+              if (e.key === "Escape") onCancelDelete();
             }}
           >
             <div className="text-center">
-              <p className="text-sm font-semibold text-white">Delete "{g.name}"?</p>
-              <p className="text-xs text-white/75 mt-1">This action cannot be undone</p>
+              <p className="text-sm font-semibold text-white">
+                Delete "{g.name}"?
+              </p>
+              <p className="text-xs text-white/75 mt-1">
+                This action cannot be undone
+              </p>
             </div>
             <div className="flex gap-2">
               <Button
@@ -104,7 +116,11 @@ function GoalCard({
               >
                 Cancel
               </Button>
-              <Button size="sm" variant="destructive" onClick={() => onConfirmDelete(g.id)}>
+              <Button
+                size="sm"
+                variant="destructive"
+                onClick={() => onConfirmDelete(g.id)}
+              >
                 Delete
               </Button>
             </div>
@@ -152,7 +168,9 @@ function GoalCard({
           </div>
           <div className="text-center">
             <p className="text-xs text-muted-foreground">Progress</p>
-            <p className="font-semibold text-primary tabular-nums">{pct.toFixed(0)}%</p>
+            <p className="font-semibold text-primary tabular-nums">
+              {pct.toFixed(0)}%
+            </p>
           </div>
           <div className="text-right">
             <p className="text-xs text-muted-foreground">Target</p>
@@ -173,7 +191,8 @@ function GoalCard({
       ) : isAddingFunds ? (
         <div className="space-y-2">
           <p className="text-xs text-muted-foreground">
-            {formatCurrency(remaining, currencySymbol)} remaining to reach your target
+            {formatCurrency(remaining, currencySymbol)} remaining to reach your
+            target
           </p>
           <div className="flex gap-2">
             <Input
@@ -185,8 +204,8 @@ function GoalCard({
               value={addFundsAmount}
               onChange={(e) => onChangeAddFundsAmount(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') onSubmitAddFunds(g.id);
-                if (e.key === 'Escape') onCancelAddFunds();
+                if (e.key === "Enter") onSubmitAddFunds(g.id);
+                if (e.key === "Escape") onCancelAddFunds();
               }}
               className="flex-1"
               autoFocus
@@ -200,12 +219,21 @@ function GoalCard({
               Add
             </Button>
           </div>
-          <Button size="sm" variant="outline" onClick={onCancelAddFunds} className="w-full">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={onCancelAddFunds}
+            className="w-full"
+          >
             Cancel
           </Button>
         </div>
       ) : (
-        <Button size="sm" onClick={() => onOpenAddFunds(g.id)} className="w-full">
+        <Button
+          size="sm"
+          onClick={() => onOpenAddFunds(g.id)}
+          className="w-full"
+        >
           Add Funds
         </Button>
       )}
@@ -222,8 +250,10 @@ export default function Goals() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingGoal, setEditingGoal] = useState<SavingsGoal | null>(null);
-  const [addingFundsGoalId, setAddingFundsGoalId] = useState<string | null>(null);
-  const [addingFundsAmount, setAddingFundsAmount] = useState('');
+  const [addingFundsGoalId, setAddingFundsGoalId] = useState<string | null>(
+    null,
+  );
+  const [addingFundsAmount, setAddingFundsAmount] = useState("");
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
   const handleAddClick = () => {
@@ -249,20 +279,20 @@ export default function Goals() {
       deleteGoal(id);
       setDeleteConfirm(null);
     },
-    [deleteGoal]
+    [deleteGoal],
   );
 
   // Switching to a different goal's "Add Funds" form without explicitly
   // cancelling the previous one used to carry over the stale amount typed
   // into the last goal's input. Resetting here guarantees a clean form.
   const handleOpenAddFunds = useCallback((goalId: string) => {
-    setAddingFundsAmount('');
+    setAddingFundsAmount("");
     setAddingFundsGoalId(goalId);
   }, []);
 
   const handleCancelAddFunds = useCallback(() => {
     setAddingFundsGoalId(null);
-    setAddingFundsAmount('');
+    setAddingFundsAmount("");
   }, []);
 
   const handleAddFunds = useCallback(
@@ -272,13 +302,16 @@ export default function Goals() {
 
       const goal = goals.find((g) => g.id === goalId);
       if (goal) {
-        const newAmount = Math.min(goal.currentAmount + amount, goal.targetAmount);
+        const newAmount = Math.min(
+          goal.currentAmount + amount,
+          goal.targetAmount,
+        );
         updateGoal(goalId, { currentAmount: newAmount });
         setAddingFundsGoalId(null);
-        setAddingFundsAmount('');
+        setAddingFundsAmount("");
       }
     },
-    [addingFundsAmount, goals, updateGoal]
+    [addingFundsAmount, goals, updateGoal],
   );
 
   // Guards against a divide-by-zero (NaN%) if every goal somehow has a
@@ -287,7 +320,8 @@ export default function Goals() {
   const { totalCurrent, totalTarget, overallProgress } = useMemo(() => {
     const totalCurrent = goals.reduce((s, g) => s + g.currentAmount, 0);
     const totalTarget = goals.reduce((s, g) => s + g.targetAmount, 0);
-    const overallProgress = totalTarget > 0 ? (totalCurrent / totalTarget) * 100 : 0;
+    const overallProgress =
+      totalTarget > 0 ? (totalCurrent / totalTarget) * 100 : 0;
     return { totalCurrent, totalTarget, overallProgress };
   }, [goals]);
 
@@ -295,7 +329,10 @@ export default function Goals() {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
   };
-  const itemVariants = { hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } };
+  const itemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0 },
+  };
 
   return (
     <motion.div
@@ -307,9 +344,12 @@ export default function Goals() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-lg sm:text-3xl font-bold text-foreground">Savings Goals</h1>
+          <h1 className="text-lg sm:text-3xl font-bold text-foreground">
+            Savings Goals
+          </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {goals.length} goal{goals.length !== 1 ? 's' : ''} • Track your financial targets
+            {goals.length} goal{goals.length !== 1 ? "s" : ""} • Track your
+            financial targets
           </p>
         </div>
         <Button onClick={handleAddClick} className="gap-2" size="lg">
@@ -387,7 +427,9 @@ export default function Goals() {
           <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center mb-4">
             <Target className="h-7 w-7 text-muted-foreground/40" />
           </div>
-          <h3 className="text-lg font-semibold text-foreground mb-2">No savings goals yet</h3>
+          <h3 className="text-lg font-semibold text-foreground mb-2">
+            No savings goals yet
+          </h3>
           <p className="text-sm text-muted-foreground text-center max-w-sm mb-6">
             Set your first financial goal and start working towards it
           </p>
@@ -403,10 +445,13 @@ export default function Goals() {
         <div className="flex gap-3">
           <Lightbulb className="h-5 w-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm font-semibold text-blue-900 dark:text-blue-100">Pro Tip</p>
+            <p className="text-sm font-semibold text-blue-900 dark:text-blue-100">
+              Pro Tip
+            </p>
             <p className="text-sm text-blue-800 dark:text-blue-200 mt-0.5">
-              Set realistic, time-bound goals. Break down large goals into smaller milestones to stay motivated and
-              track progress effectively.
+              Set realistic, time-bound goals. Break down large goals into
+              smaller milestones to stay motivated and track progress
+              effectively.
             </p>
           </div>
         </div>

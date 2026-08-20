@@ -1,34 +1,43 @@
-import { useState, useMemo, useCallback } from 'react';
-import { useApp } from '@/contexts/AppContext';
-import { formatCurrency } from '@/lib/helpers';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Trash2, Search, ArrowLeftRight, Check, X } from 'lucide-react';
-import { motion } from 'framer-motion';
-import type { Transaction } from '@/types/expense-tracker';
+import { useState, useMemo, useCallback } from "react";
+import { useApp } from "@/contexts/AppContext";
+import { formatCurrency } from "@/lib/helpers";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Trash2, Search, ArrowLeftRight, Check, X } from "lucide-react";
+import { motion } from "framer-motion";
+import type { Transaction } from "@/types/expense-tracker";
 
-type TypeFilter = 'all' | 'income' | 'expense' | 'transfer';
-type SortBy = 'newest' | 'oldest' | 'highest' | 'lowest';
+type TypeFilter = "all" | "income" | "expense" | "transfer";
+type SortBy = "newest" | "oldest" | "highest" | "lowest";
 
-const FALLBACK_COLOR = '220 10% 46%';
+const FALLBACK_COLOR = "220 10% 46%";
 
 export default function Transactions() {
   const { data, deleteTransaction, deleteTransactions } = useApp();
   const { transactions, categories, settings } = data;
   const sym = settings.currencySymbol;
 
-  const [search, setSearch] = useState('');
-  const [typeFilter, setTypeFilter] = useState<TypeFilter>('all');
-  const [sortBy, setSortBy] = useState<SortBy>('newest');
+  const [search, setSearch] = useState("");
+  const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
+  const [sortBy, setSortBy] = useState<SortBy>("newest");
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [confirmingBulkDelete, setConfirmingBulkDelete] = useState(false);
 
   // O(1) lookups instead of `categories.find(...)` re-run per transaction,
   // both inside the search filter and again during render.
-  const categoryMap = useMemo(() => new Map(categories.map((c) => [c.id, c])), [categories]);
+  const categoryMap = useMemo(
+    () => new Map(categories.map((c) => [c.id, c])),
+    [categories],
+  );
 
   const filtered = useMemo(() => {
     let list = [...transactions];
@@ -36,21 +45,25 @@ export default function Transactions() {
       const s = search.toLowerCase();
       list = list.filter((t) => {
         const cat = categoryMap.get(t.categoryId);
-        return cat?.name.toLowerCase().includes(s) || t.notes?.toLowerCase().includes(s);
+        return (
+          cat?.name.toLowerCase().includes(s) ||
+          t.notes?.toLowerCase().includes(s)
+        );
       });
     }
-    if (typeFilter !== 'all') list = list.filter((t) => t.type === typeFilter);
+    if (typeFilter !== "all") list = list.filter((t) => t.type === typeFilter);
     list.sort((a, b) => {
-      if (sortBy === 'newest') return b.date.localeCompare(a.date);
-      if (sortBy === 'oldest') return a.date.localeCompare(b.date);
-      if (sortBy === 'highest') return b.amount - a.amount;
+      if (sortBy === "newest") return b.date.localeCompare(a.date);
+      if (sortBy === "oldest") return a.date.localeCompare(b.date);
+      if (sortBy === "highest") return b.amount - a.amount;
       return a.amount - b.amount;
     });
     return list;
   }, [transactions, categoryMap, search, typeFilter, sortBy]);
 
   const visibleIds = useMemo(() => filtered.map((t) => t.id), [filtered]);
-  const allVisibleSelected = visibleIds.length > 0 && visibleIds.every((id) => selected.has(id));
+  const allVisibleSelected =
+    visibleIds.length > 0 && visibleIds.every((id) => selected.has(id));
   const someVisibleSelected = visibleIds.some((id) => selected.has(id));
 
   const toggleSelect = useCallback((id: string) => {
@@ -94,20 +107,20 @@ export default function Transactions() {
   const rowMeta = (t: Transaction) => {
     const cat = categoryMap.get(t.categoryId);
     const color = cat?.color || FALLBACK_COLOR;
-    if (t.type === 'transfer') {
+    if (t.type === "transfer") {
       return {
-        label: cat?.name || 'Transfer',
-        sign: '',
-        amountClass: 'text-foreground',
+        label: cat?.name || "Transfer",
+        sign: "",
+        amountClass: "text-foreground",
         badgeContent: <ArrowLeftRight className="h-3.5 w-3.5" />,
         badgeColor: FALLBACK_COLOR,
       };
     }
     return {
-      label: cat?.name || 'Unknown',
-      sign: t.type === 'income' ? '+' : '-',
-      amountClass: t.type === 'income' ? 'text-success' : 'text-destructive',
-      badgeContent: cat?.name.charAt(0).toUpperCase() || '?',
+      label: cat?.name || "Unknown",
+      sign: t.type === "income" ? "+" : "-",
+      amountClass: t.type === "income" ? "text-success" : "text-destructive",
+      badgeContent: cat?.name.charAt(0).toUpperCase() || "?",
       badgeColor: color,
     };
   };
@@ -120,8 +133,12 @@ export default function Transactions() {
       className="space-y-6"
     >
       <div>
-        <h1 className="text-lg sm:text-2xl font-bold text-foreground">Transactions</h1>
-        <p className="text-sm text-muted-foreground">{transactions.length} total</p>
+        <h1 className="text-lg sm:text-2xl font-bold text-foreground">
+          Transactions
+        </h1>
+        <p className="text-sm text-muted-foreground">
+          {transactions.length} total
+        </p>
       </div>
 
       {/* Filters */}
@@ -136,7 +153,10 @@ export default function Transactions() {
             aria-label="Search transactions"
           />
         </div>
-        <Select value={typeFilter} onValueChange={(v) => setTypeFilter(v as TypeFilter)}>
+        <Select
+          value={typeFilter}
+          onValueChange={(v) => setTypeFilter(v as TypeFilter)}
+        >
           <SelectTrigger className="w-full sm:w-32" aria-label="Filter by type">
             <SelectValue />
           </SelectTrigger>
@@ -163,14 +183,28 @@ export default function Transactions() {
       {/* Bulk selection bar */}
       {selected.size > 0 && (
         <div className="flex items-center gap-3 rounded-lg border border-border bg-muted/30 px-3 py-2">
-          <span className="text-sm text-muted-foreground">{selected.size} selected</span>
+          <span className="text-sm text-muted-foreground">
+            {selected.size} selected
+          </span>
           {confirmingBulkDelete ? (
             <div className="flex items-center gap-2 ml-auto">
-              <span className="text-xs text-muted-foreground">Delete {selected.size} transactions?</span>
-              <Button size="sm" variant="destructive" onClick={handleBulkDelete} className="gap-1">
+              <span className="text-xs text-muted-foreground">
+                Delete {selected.size} transactions?
+              </span>
+              <Button
+                size="sm"
+                variant="destructive"
+                onClick={handleBulkDelete}
+                className="gap-1"
+              >
                 <Check className="h-3.5 w-3.5" /> Confirm
               </Button>
-              <Button size="sm" variant="outline" onClick={() => setConfirmingBulkDelete(false)} className="gap-1">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setConfirmingBulkDelete(false)}
+                className="gap-1"
+              >
                 <X className="h-3.5 w-3.5" /> Cancel
               </Button>
             </div>
@@ -191,24 +225,33 @@ export default function Transactions() {
       <div className="glass-card divide-y divide-border">
         {filtered.length === 0 ? (
           <p className="p-4 sm:p-8 text-center text-sm text-muted-foreground">
-            {transactions.length === 0 ? 'No transactions yet' : 'No transactions match your filters'}
+            {transactions.length === 0
+              ? "No transactions yet"
+              : "No transactions match your filters"}
           </p>
         ) : (
           <>
             {/* Select all row */}
             <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 bg-muted/20">
               <Checkbox
-                checked={allVisibleSelected ? true : someVisibleSelected ? 'indeterminate' : false}
+                checked={
+                  allVisibleSelected
+                    ? true
+                    : someVisibleSelected
+                      ? "indeterminate"
+                      : false
+                }
                 onCheckedChange={toggleSelectAllVisible}
-                aria-label={allVisibleSelected ? 'Deselect all' : 'Select all'}
+                aria-label={allVisibleSelected ? "Deselect all" : "Select all"}
               />
               <span className="text-xs text-muted-foreground">
-                {allVisibleSelected ? 'All selected' : 'Select all'}
+                {allVisibleSelected ? "All selected" : "Select all"}
               </span>
             </div>
 
             {filtered.map((t) => {
-              const { label, sign, amountClass, badgeContent, badgeColor } = rowMeta(t);
+              const { label, sign, amountClass, badgeContent, badgeColor } =
+                rowMeta(t);
               const isConfirmingThis = pendingDeleteId === t.id;
 
               return (
@@ -232,12 +275,16 @@ export default function Transactions() {
                     {badgeContent}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs sm:text-sm font-medium text-foreground truncate">{label}</p>
+                    <p className="text-xs sm:text-sm font-medium text-foreground truncate">
+                      {label}
+                    </p>
                     <p className="text-xs text-muted-foreground truncate">
                       {t.date} · {t.notes || t.paymentMethod}
                     </p>
                   </div>
-                  <span className={`text-xs sm:text-sm font-semibold whitespace-nowrap tabular-nums ${amountClass}`}>
+                  <span
+                    className={`text-xs sm:text-sm font-semibold whitespace-nowrap tabular-nums ${amountClass}`}
+                  >
                     {sign}
                     {formatCurrency(t.amount, sym)}
                   </span>

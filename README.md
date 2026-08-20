@@ -25,12 +25,14 @@ FinOvaa is a full-featured expense tracker built for people who want clarity on 
 ## ✨ Features
 
 ### 📊 Dashboard
+
 - Real-time summary cards for income, expenses, and balance
 - Smooth entrance animations with Framer Motion
 - Recent transactions overview
 - Monthly spending/income charts and weekly trends
 
 ### 💳 Transactions
+
 - Log expenses, income, and transfers between accounts
 - Custom categories with icons and colors
 - Multiple payment methods (Cash, Card, Bank Transfer, Online Payment)
@@ -38,60 +40,68 @@ FinOvaa is a full-featured expense tracker built for people who want clarity on 
 - Filterable, sortable transaction history
 
 ### 📁 Categories
+
 - Custom spending categories with Lucide icons
 - Color-coded cards and monthly spend-by-category tracking
 - Separate expense and income category sets, with sensible defaults
 
 ### 💰 Budgets
+
 - Overall monthly budget plus per-category limits
 - Visual progress tracking with green/yellow/red utilization warnings
 
 ### 💼 Accounts
+
 - Multiple accounts — Cash, Bank, Credit Card, Digital Wallet
 - Per-account balance, income, and expense tracking
 - Transfers between accounts
 
 ### 🎯 Goals
+
 - Create and track savings goals with progress bars
 - Fund goals directly from an account
 - Goal completion analytics
 
 ### 📈 Reports
+
 - Monthly spending analysis and category breakdowns
 - Income vs. expense comparison and trend patterns
 - Exportable financial data
 
 ### ⚙️ Settings
+
 - Light/dark theme with accent color customization
 - Currency selection with symbol support (PKR, USD, etc.)
 - Full JSON export/import for backup and migration
 - Data reset
 
 ### 📱 Responsive by Default
+
 - Mobile-first layout with a bottom nav on small screens
 - Collapsible sidebar on desktop
 - Touch-friendly components throughout, breakpoints at `sm` (640px), `md` (768px), `lg` (1024px)
 
 ## 🛠 Tech Stack
 
-| Layer | Choice |
-|---|---|
-| Framework | React 18 |
-| Build Tool | Vite |
-| Language | TypeScript |
-| Styling | Tailwind CSS |
-| UI Components | shadcn/ui |
-| Icons | Lucide React (40+ icons) |
-| Routing | React Router v7 |
-| Animation | Framer Motion |
-| State | React Context API |
-| Storage | LocalStorage & SessionStorage |
-| Testing | Vitest |
-| Deployment | Vercel |
+| Layer         | Choice                        |
+| ------------- | ----------------------------- |
+| Framework     | React 18                      |
+| Build Tool    | Vite                          |
+| Language      | TypeScript                    |
+| Styling       | Tailwind CSS                  |
+| UI Components | shadcn/ui                     |
+| Icons         | Lucide React (40+ icons)      |
+| Routing       | React Router v7               |
+| Animation     | Framer Motion                 |
+| State         | React Context API             |
+| Storage       | LocalStorage & SessionStorage |
+| Testing       | Vitest                        |
+| Deployment    | Vercel                        |
 
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js v16+
 - npm or bun
 
@@ -154,17 +164,17 @@ src/
 
 ## 🗺 Routes
 
-| Path | Page |
-|---|---|
-| `/` | Dashboard |
+| Path            | Page                          |
+| --------------- | ----------------------------- |
+| `/`             | Dashboard                     |
 | `/transactions` | Transaction list & management |
-| `/categories` | Category management |
-| `/accounts` | Account management |
-| `/budgets` | Budget planning |
-| `/goals` | Savings goals |
-| `/reports` | Financial reports |
-| `/settings` | App settings |
-| `/about` | About |
+| `/categories`   | Category management           |
+| `/accounts`     | Account management            |
+| `/budgets`      | Budget planning               |
+| `/goals`        | Savings goals                 |
+| `/reports`      | Financial reports             |
+| `/settings`     | App settings                  |
+| `/about`        | About                         |
 
 ## ⌨️ Keyboard Shortcuts
 
@@ -211,7 +221,7 @@ Open an issue on GitHub, or reach out to the development team via the links belo
 
 [Portfolio](https://abdulbasit-archer.vercel.app/) · [LinkedIn](https://lnkd.in/p/ddQJfr8x)
 
-*Built with ❤️ for better financial management*
+_Built with ❤️ for better financial management_
 
 Last Updated: February 2026
 
