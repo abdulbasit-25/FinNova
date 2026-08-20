@@ -1,5 +1,5 @@
-import React, { createContext, useContext } from 'react';
-import { useAppData } from '@/hooks/useAppData';
+import React, { createContext, useContext } from "react";
+import { useAppData } from "@/hooks/useAppData";
 
 type AppContextType = ReturnType<typeof useAppData>;
 
@@ -12,6 +12,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
 export function useApp() {
   const ctx = useContext(AppContext);
-  if (!ctx) throw new Error('useApp must be used within AppProvider');
+  if (!ctx) throw new Error("useApp must be used within AppProvider");
   return ctx;
 }
