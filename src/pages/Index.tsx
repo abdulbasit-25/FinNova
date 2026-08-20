@@ -93,7 +93,7 @@ const Index = () => {
           Dashboard
         </h1>
         <p className="text-sm text-muted-foreground">
-          {greeting} • Here's your dvgdsgdsgdsg overview
+          {greeting} • Here's your financial overview
         </p>
       </motion.div>
 
