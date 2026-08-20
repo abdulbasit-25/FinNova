@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { BaseModal } from './BaseModal';
-import { ColorPicker } from './ColorPicker';
-import { IconPicker } from './IconPicker';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { AlertCircle } from 'lucide-react';
-import { SavingsGoal } from '@/types/expense-tracker';
-import { generateId } from '@/lib/helpers';
+import React, { useState } from "react";
+import { BaseModal } from "./BaseModal";
+import { ColorPicker } from "./ColorPicker";
+import { IconPicker } from "./IconPicker";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { AlertCircle } from "lucide-react";
+import { SavingsGoal } from "@/types/expense-tracker";
+import { generateId } from "@/lib/helpers";
 
 interface GoalsModalProps {
   isOpen: boolean;
@@ -22,12 +22,18 @@ export function GoalsModal({
   onSubmit,
   editingGoal,
 }: GoalsModalProps) {
-  const [name, setName] = useState(editingGoal?.name || '');
-  const [icon, setIcon] = useState(editingGoal?.icon || 'Goal');
-  const [color, setColor] = useState(editingGoal?.color || 'hsl(142, 76%, 36%)');
-  const [targetAmount, setTargetAmount] = useState(editingGoal?.targetAmount.toString() || '');
-  const [currentAmount, setCurrentAmount] = useState(editingGoal?.currentAmount.toString() || '0');
-  const [deadline, setDeadline] = useState(editingGoal?.deadline || '');
+  const [name, setName] = useState(editingGoal?.name || "");
+  const [icon, setIcon] = useState(editingGoal?.icon || "Goal");
+  const [color, setColor] = useState(
+    editingGoal?.color || "hsl(142, 76%, 36%)",
+  );
+  const [targetAmount, setTargetAmount] = useState(
+    editingGoal?.targetAmount.toString() || "",
+  );
+  const [currentAmount, setCurrentAmount] = useState(
+    editingGoal?.currentAmount.toString() || "0",
+  );
+  const [deadline, setDeadline] = useState(editingGoal?.deadline || "");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -35,31 +41,31 @@ export function GoalsModal({
     const newErrors: Record<string, string> = {};
 
     if (!name.trim()) {
-      newErrors.name = 'Goal name is required';
+      newErrors.name = "Goal name is required";
     }
 
     const targetNum = Number(targetAmount);
     if (!targetAmount || targetNum <= 0) {
-      newErrors.targetAmount = 'Please enter a valid target amount';
+      newErrors.targetAmount = "Please enter a valid target amount";
     }
 
     const currentNum = Number(currentAmount);
     if (isNaN(currentNum) || currentNum < 0) {
-      newErrors.currentAmount = 'Please enter a valid current amount';
+      newErrors.currentAmount = "Please enter a valid current amount";
     }
 
     if (!deadline) {
-      newErrors.deadline = 'Please set a deadline';
+      newErrors.deadline = "Please set a deadline";
     } else if (new Date(deadline) < new Date()) {
-      newErrors.deadline = 'Deadline must be in the future';
+      newErrors.deadline = "Deadline must be in the future";
     }
 
     if (!icon) {
-      newErrors.icon = 'Please select an icon';
+      newErrors.icon = "Please select an icon";
     }
 
     if (!color) {
-      newErrors.color = 'Please select a color';
+      newErrors.color = "Please select a color";
     }
 
     setErrors(newErrors);
@@ -73,7 +79,7 @@ export function GoalsModal({
 
     setIsSubmitting(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       const goal: SavingsGoal = {
         id: editingGoal?.id || generateId(),
@@ -94,12 +100,12 @@ export function GoalsModal({
   };
 
   const resetForm = () => {
-    setName('');
-    setIcon('Goal');
-    setColor('hsl(142, 76%, 36%)');
-    setTargetAmount('');
-    setCurrentAmount('0');
-    setDeadline('');
+    setName("");
+    setIcon("Goal");
+    setColor("hsl(142, 76%, 36%)");
+    setTargetAmount("");
+    setCurrentAmount("0");
+    setDeadline("");
     setErrors({});
   };
 
@@ -110,14 +116,14 @@ export function GoalsModal({
 
   const progressPercent = Math.min(
     (Number(currentAmount) / Number(targetAmount)) * 100,
-    100
+    100,
   );
 
   return (
     <BaseModal
       isOpen={isOpen}
       onClose={handleClose}
-      title={editingGoal ? 'Edit Goal' : 'Add Savings Goal'}
+      title={editingGoal ? "Edit Goal" : "Add Savings Goal"}
       description="Create a new savings goal with a target amount and deadline"
       size="lg"
     >
@@ -131,12 +137,12 @@ export function GoalsModal({
             id="goal-name"
             placeholder="e.g., Vacation, New Car, Emergency Fund"
             value={name}
-            onChange={e => {
+            onChange={(e) => {
               setName(e.target.value);
-              if (errors.name) setErrors({ ...errors, name: '' });
+              if (errors.name) setErrors({ ...errors, name: "" });
             }}
             disabled={isSubmitting}
-            className={errors.name ? 'border-destructive' : ''}
+            className={errors.name ? "border-destructive" : ""}
           />
           {errors.name && (
             <p className="text-sm font-medium text-destructive flex items-center gap-1">
@@ -157,12 +163,13 @@ export function GoalsModal({
               step="0.01"
               placeholder="0.00"
               value={targetAmount}
-              onChange={e => {
+              onChange={(e) => {
                 setTargetAmount(e.target.value);
-                if (errors.targetAmount) setErrors({ ...errors, targetAmount: '' });
+                if (errors.targetAmount)
+                  setErrors({ ...errors, targetAmount: "" });
               }}
               disabled={isSubmitting}
-              className={errors.targetAmount ? 'border-destructive' : ''}
+              className={errors.targetAmount ? "border-destructive" : ""}
             />
             {errors.targetAmount && (
               <p className="text-sm font-medium text-destructive flex items-center gap-1">
@@ -181,12 +188,13 @@ export function GoalsModal({
               step="0.01"
               placeholder="0.00"
               value={currentAmount}
-              onChange={e => {
+              onChange={(e) => {
                 setCurrentAmount(e.target.value);
-                if (errors.currentAmount) setErrors({ ...errors, currentAmount: '' });
+                if (errors.currentAmount)
+                  setErrors({ ...errors, currentAmount: "" });
               }}
               disabled={isSubmitting}
-              className={errors.currentAmount ? 'border-destructive' : ''}
+              className={errors.currentAmount ? "border-destructive" : ""}
             />
             {errors.currentAmount && (
               <p className="text-sm font-medium text-destructive flex items-center gap-1">
@@ -205,12 +213,12 @@ export function GoalsModal({
             id="goal-deadline"
             type="date"
             value={deadline}
-            onChange={e => {
+            onChange={(e) => {
               setDeadline(e.target.value);
-              if (errors.deadline) setErrors({ ...errors, deadline: '' });
+              if (errors.deadline) setErrors({ ...errors, deadline: "" });
             }}
             disabled={isSubmitting}
-            className={errors.deadline ? 'border-destructive' : ''}
+            className={errors.deadline ? "border-destructive" : ""}
           />
           {errors.deadline && (
             <p className="text-sm font-medium text-destructive flex items-center gap-1">
@@ -220,7 +228,11 @@ export function GoalsModal({
         </div>
 
         {/* Icon Picker */}
-        <div className={errors.icon ? 'border border-destructive/30 rounded-lg p-4' : ''}>
+        <div
+          className={
+            errors.icon ? "border border-destructive/30 rounded-lg p-4" : ""
+          }
+        >
           <IconPicker value={icon} onChange={setIcon} label="Select Icon" />
           {errors.icon && (
             <p className="text-sm font-medium text-destructive flex items-center gap-1 mt-2">
@@ -230,7 +242,11 @@ export function GoalsModal({
         </div>
 
         {/* Color Picker */}
-        <div className={errors.color ? 'border border-destructive/30 rounded-lg p-4' : ''}>
+        <div
+          className={
+            errors.color ? "border border-destructive/30 rounded-lg p-4" : ""
+          }
+        >
           <ColorPicker value={color} onChange={setColor} label="Select Color" />
           {errors.color && (
             <p className="text-sm font-medium text-destructive flex items-center gap-1 mt-2">
@@ -244,12 +260,15 @@ export function GoalsModal({
           <div className="p-4 rounded-lg bg-muted/50 border border-border space-y-3">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-semibold">{name || 'Goal Name'}</p>
+                <p className="font-semibold">{name || "Goal Name"}</p>
                 <p className="text-sm text-muted-foreground">
-                  ${Number(currentAmount).toFixed(2)} / ${Number(targetAmount).toFixed(2)}
+                  ${Number(currentAmount).toFixed(2)} / $
+                  {Number(targetAmount).toFixed(2)}
                 </p>
               </div>
-              <span className="text-lg font-bold text-primary">{Math.round(progressPercent)}%</span>
+              <span className="text-lg font-bold text-primary">
+                {Math.round(progressPercent)}%
+              </span>
             </div>
             <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
               <div
@@ -279,7 +298,7 @@ export function GoalsModal({
             disabled={isSubmitting || !name || !targetAmount || !deadline}
             className="flex-1"
           >
-            {isSubmitting ? 'Adding...' : editingGoal ? 'Update' : 'Add'} Goal
+            {isSubmitting ? "Adding..." : editingGoal ? "Update" : "Add"} Goal
           </Button>
         </div>
       </form>
