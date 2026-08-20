@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { formatCurrency } from '@/lib/helpers';
+import { useEffect, useState } from "react";
+import { formatCurrency } from "@/lib/helpers";
 
 interface AnimatedCounterProps {
   value: number;
@@ -7,7 +7,11 @@ interface AnimatedCounterProps {
   duration?: number;
 }
 
-export function AnimatedCounter({ value, symbol = '$', duration = 800 }: AnimatedCounterProps) {
+export function AnimatedCounter({
+  value,
+  symbol = "$",
+  duration = 800,
+}: AnimatedCounterProps) {
   const [display, setDisplay] = useState(0);
 
   useEffect(() => {
