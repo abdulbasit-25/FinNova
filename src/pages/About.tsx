@@ -18,11 +18,11 @@ import {
   Download,
   Smartphone,
   ShieldCheck,
-} from 'lucide-react';
-import { motion } from 'framer-motion';
+} from "lucide-react";
+import { motion } from "framer-motion";
 
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
@@ -65,7 +65,7 @@ export default function About() {
           className="text-4xl sm:text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent
                      bg-gradient-to-r from-primary via-foreground to-accent
                      bg-[length:200%_200%]"
-          style={{ animation: 'finova-gradient 8s ease infinite' }}
+          style={{ animation: "finova-gradient 8s ease infinite" }}
         >
           Meet <span className="text-accent">FinNova</span>
         </h1>
@@ -80,12 +80,11 @@ export default function About() {
           <Activity className="absolute bottom-4 right-8 h-5 w-5 text-accent/50 animate-bounce [animation-delay:0.4s]" />
 
           <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-            <span className="font-bold text-foreground">FinNova</span> ={' '}
-            <span className="text-primary font-semibold">Finance</span> +{' '}
-            <span className="text-primary font-semibold">Nova</span>. A
-            bright new star in personal finance — track your spending,
-            visualize your money, and take full control with a clean,
-            powerful dashboard.{' '}
+            <span className="font-bold text-foreground">FinNova</span> ={" "}
+            <span className="text-primary font-semibold">Finance</span> +{" "}
+            <span className="text-primary font-semibold">Nova</span>. A bright
+            new star in personal finance — track your spending, visualize your
+            money, and take full control with a clean, powerful dashboard.{" "}
             <span className="text-accent font-semibold">
               Simple. Insightful. Smart.
             </span>
@@ -116,8 +115,8 @@ export default function About() {
                 Install FinNova on Android
               </h2>
               <p className="max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-                Download the latest FinNova APK and take your budget, spending insights,
-                and financial planning with you wherever you go.
+                Download the latest FinNova APK and take your budget, spending
+                insights, and financial planning with you wherever you go.
               </p>
             </div>
 
@@ -126,9 +125,9 @@ export default function About() {
                 size="lg"
                 onClick={() =>
                   window.open(
-                    'https://drive.google.com/file/d/1ZawANOFho0W4GgwsKifuQ-FTQ4uCpweq/view',
-                    '_blank',
-                    'noopener,noreferrer',
+                    "https://drive.google.com/file/d/1ZawANOFho0W4GgwsKifuQ-FTQ4uCpweq/view",
+                    "_blank",
+                    "noopener,noreferrer",
                   )
                 }
                 className="gap-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/30"
@@ -200,9 +199,9 @@ export default function About() {
             </div>
 
             <p className="text-sm text-muted-foreground leading-relaxed">
-              I design and build intuitive digital experiences that
-              simplify complex workflows. FinNova is crafted with
-              performance, usability, and modern design principles.
+              I design and build intuitive digital experiences that simplify
+              complex workflows. FinNova is crafted with performance, usability,
+              and modern design principles.
             </p>
 
             <div className="flex flex-wrap gap-2 sm:gap-3 pt-4">
@@ -211,7 +210,7 @@ export default function About() {
                 label="Portfolio"
                 hoverClass="hover:bg-primary hover:text-primary-foreground"
                 onClick={() =>
-                  window.open('https://abdulbasit-archer.vercel.app/', '_blank')
+                  window.open("https://abdulbasit-archer.vercel.app/", "_blank")
                 }
               />
               <HoverButton
@@ -219,7 +218,7 @@ export default function About() {
                 label="GitHub"
                 hoverClass="hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
                 onClick={() =>
-                  window.open('https://github.com/abdulbasit-25', '_blank')
+                  window.open("https://github.com/abdulbasit-25", "_blank")
                 }
               />
               <HoverButton
@@ -228,8 +227,8 @@ export default function About() {
                 hoverClass="hover:bg-[#0A66C2] hover:text-white"
                 onClick={() =>
                   window.open(
-                    'https://www.linkedin.com/in/abdul-basit-741977295/',
-                    '_blank',
+                    "https://www.linkedin.com/in/abdul-basit-741977295/",
+                    "_blank",
                   )
                 }
               />
@@ -238,7 +237,7 @@ export default function About() {
                 label="Email"
                 hoverClass="hover:bg-red-500 hover:text-white"
                 onClick={() =>
-                  (window.location.href = 'mailto:abdulbasit.alpha25@gmail.com')
+                  (window.location.href = "mailto:abdulbasit.alpha25@gmail.com")
                 }
               />
               <HoverButton
@@ -246,7 +245,7 @@ export default function About() {
                 label="WhatsApp"
                 hoverClass="hover:bg-[#25D366] hover:text-white"
                 onClick={() =>
-                  window.open('https://wa.me/923415878569', '_blank')
+                  window.open("https://wa.me/923415878569", "_blank")
                 }
               />
             </div>
@@ -268,19 +267,36 @@ export default function About() {
             Built for Simplicity & Power
           </h2>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            FinNova helps you track income, manage expenses, set budgets,
-            and analyze spending patterns — all with a clean, intuitive
-            interface.
+            FinNova helps you track income, manage expenses, set budgets, and
+            analyze spending patterns — all with a clean, intuitive interface.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-          <FeatureCard icon={<Wallet className="h-4 w-4" />} title="Income & Expenses" />
-          <FeatureCard icon={<BarChart3 className="h-4 w-4" />} title="Smart Analytics" />
-          <FeatureCard icon={<Target className="h-4 w-4" />} title="Budget & Goals" />
-          <FeatureCard icon={<Globe className="h-4 w-4" />} title="Multi-Currency" />
-          <FeatureCard icon={<Shield className="h-4 w-4" />} title="Secure Backups" />
-          <FeatureCard icon={<Sparkles className="h-4 w-4" />} title="Clean UI Experience" />
+          <FeatureCard
+            icon={<Wallet className="h-4 w-4" />}
+            title="Income & Expenses"
+          />
+          <FeatureCard
+            icon={<BarChart3 className="h-4 w-4" />}
+            title="Smart Analytics"
+          />
+          <FeatureCard
+            icon={<Target className="h-4 w-4" />}
+            title="Budget & Goals"
+          />
+          <FeatureCard
+            icon={<Globe className="h-4 w-4" />}
+            title="Multi-Currency"
+          />
+          <FeatureCard
+            icon={<Shield className="h-4 w-4" />}
+            title="Secure Backups"
+          />
+          <FeatureCard
+            icon={<Sparkles className="h-4 w-4" />}
+            title="Clean UI Experience"
+          />
         </div>
       </motion.section>
 
@@ -300,9 +316,21 @@ export default function About() {
           Application Info
         </h3>
 
-        <InfoRow icon={<Tag className="h-4 w-4" />} label="Version" value="1.0.0" />
-        <InfoRow icon={<Code2 className="h-4 w-4" />} label="Built With" value="React, TypeScript & Tailwind CSS" />
-        <InfoRow icon={<CalendarClock className="h-4 w-4" />} label="Last Updated" value="February 2026" />
+        <InfoRow
+          icon={<Tag className="h-4 w-4" />}
+          label="Version"
+          value="1.0.0"
+        />
+        <InfoRow
+          icon={<Code2 className="h-4 w-4" />}
+          label="Built With"
+          value="React, TypeScript & Tailwind CSS"
+        />
+        <InfoRow
+          icon={<CalendarClock className="h-4 w-4" />}
+          label="Last Updated"
+          value="February 2026"
+        />
       </motion.section>
 
       {/* FOOTER */}
