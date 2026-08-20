@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { BaseModal } from './BaseModal';
-import { ColorPicker } from './ColorPicker';
-import { IconPicker } from './IconPicker';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { AlertCircle } from 'lucide-react';
-import { Category } from '@/types/expense-tracker';
-import { generateId, getIconComponent } from '@/lib/helpers';
+import React, { useState, useEffect } from "react";
+import { BaseModal } from "./BaseModal";
+import { ColorPicker } from "./ColorPicker";
+import { IconPicker } from "./IconPicker";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { AlertCircle } from "lucide-react";
+import { Category } from "@/types/expense-tracker";
+import { generateId, getIconComponent } from "@/lib/helpers";
 
 interface CategoriesModalProps {
   isOpen: boolean;
@@ -23,10 +29,10 @@ export function CategoriesModal({
   onSubmit,
   editingCategory,
 }: CategoriesModalProps) {
-  const [name, setName] = useState('');
-  const [icon, setIcon] = useState('Shopping');
-  const [color, setColor] = useState('25 95% 53%');
-  const [type, setType] = useState<'income' | 'expense' | 'both'>('expense');
+  const [name, setName] = useState("");
+  const [icon, setIcon] = useState("Shopping");
+  const [color, setColor] = useState("25 95% 53%");
+  const [type, setType] = useState<"income" | "expense" | "both">("expense");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -40,10 +46,10 @@ export function CategoriesModal({
         setType(editingCategory.type);
       } else {
         // Reset for new category
-        setName('');
-        setIcon('Shopping');
-        setColor('25 95% 53%');
-        setType('expense');
+        setName("");
+        setIcon("Shopping");
+        setColor("25 95% 53%");
+        setType("expense");
       }
       setErrors({});
     }
@@ -53,15 +59,15 @@ export function CategoriesModal({
     const newErrors: Record<string, string> = {};
 
     if (!name.trim()) {
-      newErrors.name = 'Category name is required';
+      newErrors.name = "Category name is required";
     }
 
     if (!icon) {
-      newErrors.icon = 'Please select an icon';
+      newErrors.icon = "Please select an icon";
     }
 
     if (!color) {
-      newErrors.color = 'Please select a color';
+      newErrors.color = "Please select a color";
     }
 
     setErrors(newErrors);
@@ -75,7 +81,7 @@ export function CategoriesModal({
 
     setIsSubmitting(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       const category: Category = {
         id: editingCategory?.id || generateId(),
@@ -95,10 +101,10 @@ export function CategoriesModal({
   };
 
   const resetForm = () => {
-    setName('');
-    setIcon('Shopping');
-    setColor('25 95% 53%');
-    setType('expense');
+    setName("");
+    setIcon("Shopping");
+    setColor("25 95% 53%");
+    setType("expense");
     setErrors({});
   };
 
@@ -111,7 +117,7 @@ export function CategoriesModal({
     <BaseModal
       isOpen={isOpen}
       onClose={handleClose}
-      title={editingCategory ? 'Edit Category' : 'Add Category'}
+      title={editingCategory ? "Edit Category" : "Add Category"}
       description="Create a new spending category with custom icon and color"
       size="lg"
     >
@@ -125,12 +131,12 @@ export function CategoriesModal({
             id="cat-name"
             placeholder="e.g., Coffee, Rent, Salary"
             value={name}
-            onChange={e => {
+            onChange={(e) => {
               setName(e.target.value);
-              if (errors.name) setErrors({ ...errors, name: '' });
+              if (errors.name) setErrors({ ...errors, name: "" });
             }}
             disabled={isSubmitting}
-            className={errors.name ? 'border-destructive' : ''}
+            className={errors.name ? "border-destructive" : ""}
           />
           {errors.name && (
             <p className="text-sm font-medium text-destructive flex items-center gap-1">
@@ -144,7 +150,11 @@ export function CategoriesModal({
           <Label htmlFor="cat-type" className="font-semibold">
             Category Type
           </Label>
-          <Select value={type} onValueChange={v => setType(v as any)} disabled={isSubmitting}>
+          <Select
+            value={type}
+            onValueChange={(v) => setType(v as any)}
+            disabled={isSubmitting}
+          >
             <SelectTrigger id="cat-type">
               <SelectValue />
             </SelectTrigger>
@@ -157,7 +167,11 @@ export function CategoriesModal({
         </div>
 
         {/* Icon Picker */}
-        <div className={errors.icon ? 'border border-destructive/30 rounded-lg p-4' : ''}>
+        <div
+          className={
+            errors.icon ? "border border-destructive/30 rounded-lg p-4" : ""
+          }
+        >
           <IconPicker value={icon} onChange={setIcon} label="Select Icon" />
           {errors.icon && (
             <p className="text-sm font-medium text-destructive flex items-center gap-1 mt-2">
@@ -167,7 +181,11 @@ export function CategoriesModal({
         </div>
 
         {/* Color Picker */}
-        <div className={errors.color ? 'border border-destructive/30 rounded-lg p-4' : ''}>
+        <div
+          className={
+            errors.color ? "border border-destructive/30 rounded-lg p-4" : ""
+          }
+        >
           <ColorPicker value={color} onChange={setColor} label="Select Color" />
           {errors.color && (
             <p className="text-sm font-medium text-destructive flex items-center gap-1 mt-2">
@@ -189,7 +207,7 @@ export function CategoriesModal({
               })()}
             </div>
             <div>
-              <p className="font-semibold">{name || 'Category Name'}</p>
+              <p className="font-semibold">{name || "Category Name"}</p>
               <p className="text-xs text-muted-foreground capitalize">{type}</p>
             </div>
           </div>
@@ -211,7 +229,8 @@ export function CategoriesModal({
             disabled={isSubmitting || !name || !icon || !color}
             className="flex-1"
           >
-            {isSubmitting ? 'Adding...' : editingCategory ? 'Update' : 'Add'} Category
+            {isSubmitting ? "Adding..." : editingCategory ? "Update" : "Add"}{" "}
+            Category
           </Button>
         </div>
       </form>
