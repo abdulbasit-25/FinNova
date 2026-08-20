@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
-import { BaseModal } from './BaseModal';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { AlertCircle } from 'lucide-react';
-import { Budget, Category } from '@/types/expense-tracker';
-import { generateId } from '@/lib/helpers';
+import React, { useState } from "react";
+import { BaseModal } from "./BaseModal";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { AlertCircle } from "lucide-react";
+import { Budget, Category } from "@/types/expense-tracker";
+import { generateId } from "@/lib/helpers";
 
 interface BudgetsModalProps {
   isOpen: boolean;
@@ -23,15 +29,15 @@ export function BudgetsModal({
   onSubmit,
   categories,
   editingBudget,
-  currencySymbol = '$',
+  currencySymbol = "$",
 }: BudgetsModalProps) {
-  const [categoryId, setCategoryId] = useState(editingBudget?.categoryId || '');
-  const [amount, setAmount] = useState(editingBudget?.amount.toString() || '');
+  const [categoryId, setCategoryId] = useState(editingBudget?.categoryId || "");
+  const [amount, setAmount] = useState(editingBudget?.amount.toString() || "");
   const [month, setMonth] = useState(
-    editingBudget?.month || new Date().toISOString().slice(0, 7)
+    editingBudget?.month || new Date().toISOString().slice(0, 7),
   );
-  const [isBudgetType, setIsBudgetType] = useState<'category' | 'overall'>(
-    editingBudget?.categoryId ? 'category' : 'overall'
+  const [isBudgetType, setIsBudgetType] = useState<"category" | "overall">(
+    editingBudget?.categoryId ? "category" : "overall",
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -41,15 +47,15 @@ export function BudgetsModal({
 
     const amountNum = Number(amount);
     if (!amount || amountNum <= 0) {
-      newErrors.amount = 'Please enter a valid budget amount';
+      newErrors.amount = "Please enter a valid budget amount";
     }
 
-    if (isBudgetType === 'category' && !categoryId) {
-      newErrors.category = 'Please select a category';
+    if (isBudgetType === "category" && !categoryId) {
+      newErrors.category = "Please select a category";
     }
 
     if (!month) {
-      newErrors.month = 'Please select a month';
+      newErrors.month = "Please select a month";
     }
 
     setErrors(newErrors);
@@ -63,11 +69,11 @@ export function BudgetsModal({
 
     setIsSubmitting(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       const budget: Budget = {
         id: editingBudget?.id || generateId(),
-        categoryId: isBudgetType === 'category' ? categoryId : null,
+        categoryId: isBudgetType === "category" ? categoryId : null,
         amount: Number(amount),
         month,
       };
@@ -81,10 +87,10 @@ export function BudgetsModal({
   };
 
   const resetForm = () => {
-    setCategoryId('');
-    setAmount('');
+    setCategoryId("");
+    setAmount("");
     setMonth(new Date().toISOString().slice(0, 7));
-    setIsBudgetType('category');
+    setIsBudgetType("category");
     setErrors({});
   };
 
@@ -93,13 +99,13 @@ export function BudgetsModal({
     onClose();
   };
 
-  const selectedCategory = categories.find(c => c.id === categoryId);
+  const selectedCategory = categories.find((c) => c.id === categoryId);
 
   return (
     <BaseModal
       isOpen={isOpen}
       onClose={handleClose}
-      title={editingBudget ? 'Edit Budget' : 'Add Budget'}
+      title={editingBudget ? "Edit Budget" : "Add Budget"}
       description="Set spending limits for categories or overall budget"
       size="md"
     >
@@ -111,13 +117,13 @@ export function BudgetsModal({
             <button
               type="button"
               onClick={() => {
-                setIsBudgetType('category');
-                setCategoryId('');
+                setIsBudgetType("category");
+                setCategoryId("");
               }}
               className={`flex-1 rounded-md px-4 py-2 text-sm font-semibold transition-all ${
-                isBudgetType === 'category'
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground'
+                isBudgetType === "category"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground"
               }`}
             >
               Category
@@ -125,13 +131,13 @@ export function BudgetsModal({
             <button
               type="button"
               onClick={() => {
-                setIsBudgetType('overall');
-                setCategoryId('');
+                setIsBudgetType("overall");
+                setCategoryId("");
               }}
               className={`flex-1 rounded-md px-4 py-2 text-sm font-semibold transition-all ${
-                isBudgetType === 'overall'
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground'
+                isBudgetType === "overall"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground"
               }`}
             >
               Overall
@@ -140,20 +146,24 @@ export function BudgetsModal({
         </div>
 
         {/* Category Selector (if category budget) */}
-        {isBudgetType === 'category' && (
+        {isBudgetType === "category" && (
           <div className="space-y-2">
             <Label htmlFor="budget-category" className="font-semibold">
               Select Category
             </Label>
-            <Select value={categoryId} onValueChange={setCategoryId} disabled={isSubmitting}>
+            <Select
+              value={categoryId}
+              onValueChange={setCategoryId}
+              disabled={isSubmitting}
+            >
               <SelectTrigger
                 id="budget-category"
-                className={errors.category ? 'border-destructive' : ''}
+                className={errors.category ? "border-destructive" : ""}
               >
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
               <SelectContent>
-                {categories.map(c => (
+                {categories.map((c) => (
                   <SelectItem key={c.id} value={c.id}>
                     <div className="flex items-center gap-2">
                       <span>{c.icon}</span>
@@ -180,12 +190,12 @@ export function BudgetsModal({
             id="budget-month"
             type="month"
             value={month}
-            onChange={e => {
+            onChange={(e) => {
               setMonth(e.target.value);
-              if (errors.month) setErrors({ ...errors, month: '' });
+              if (errors.month) setErrors({ ...errors, month: "" });
             }}
             disabled={isSubmitting}
-            className={errors.month ? 'border-destructive' : ''}
+            className={errors.month ? "border-destructive" : ""}
           />
           {errors.month && (
             <p className="text-sm font-medium text-destructive flex items-center gap-1">
@@ -205,12 +215,12 @@ export function BudgetsModal({
             step="0.01"
             placeholder="0.00"
             value={amount}
-            onChange={e => {
+            onChange={(e) => {
               setAmount(e.target.value);
-              if (errors.amount) setErrors({ ...errors, amount: '' });
+              if (errors.amount) setErrors({ ...errors, amount: "" });
             }}
             disabled={isSubmitting}
-            className={errors.amount ? 'border-destructive' : ''}
+            className={errors.amount ? "border-destructive" : ""}
           />
           {errors.amount && (
             <p className="text-sm font-medium text-destructive flex items-center gap-1">
@@ -222,25 +232,34 @@ export function BudgetsModal({
         {/* Preview */}
         {amount && (
           <div className="p-4 rounded-lg bg-muted/50 border border-border space-y-2">
-            <p className="text-sm text-muted-foreground uppercase tracking-wide">Budget Preview</p>
-            {isBudgetType === 'category' && selectedCategory ? (
+            <p className="text-sm text-muted-foreground uppercase tracking-wide">
+              Budget Preview
+            </p>
+            {isBudgetType === "category" && selectedCategory ? (
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">{selectedCategory.icon}</span>
                   <p className="font-semibold">{selectedCategory.name}</p>
                 </div>
-                <p className="text-lg font-bold text-primary">{currencySymbol}{Number(amount).toFixed(2)}</p>
+                <p className="text-lg font-bold text-primary">
+                  {currencySymbol}
+                  {Number(amount).toFixed(2)}
+                </p>
               </div>
             ) : (
               <div className="flex items-center justify-between">
                 <p className="font-semibold">Overall Monthly Budget</p>
-                <p className="text-lg font-bold text-primary">{currencySymbol}{Number(amount).toFixed(2)}</p>
+                <p className="text-lg font-bold text-primary">
+                  {currencySymbol}
+                  {Number(amount).toFixed(2)}
+                </p>
               </div>
             )}
             <p className="text-xs text-muted-foreground">
-              For {new Date(`${month}-01`).toLocaleDateString('en-US', {
-                month: 'long',
-                year: 'numeric',
+              For{" "}
+              {new Date(`${month}-01`).toLocaleDateString("en-US", {
+                month: "long",
+                year: "numeric",
               })}
             </p>
           </div>
@@ -262,11 +281,12 @@ export function BudgetsModal({
             disabled={
               isSubmitting ||
               !amount ||
-              (isBudgetType === 'category' && !categoryId)
+              (isBudgetType === "category" && !categoryId)
             }
             className="flex-1"
           >
-            {isSubmitting ? 'Adding...' : editingBudget ? 'Update' : 'Add'} Budget
+            {isSubmitting ? "Adding..." : editingBudget ? "Update" : "Add"}{" "}
+            Budget
           </Button>
         </div>
       </form>
