@@ -1,16 +1,22 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useApp } from '@/contexts/AppContext';
-import { useToast } from '@/hooks/use-toast';
-import { generateId, getIconComponent, formatCurrency } from '@/lib/helpers';
-import { TransactionType, PaymentMethod } from '@/types/expense-tracker';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { Card } from '@/components/ui/card';
-import { AlertDescription } from '@/components/ui/alert';
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useApp } from "@/contexts/AppContext";
+import { useToast } from "@/hooks/use-toast";
+import { generateId, getIconComponent, formatCurrency } from "@/lib/helpers";
+import { TransactionType, PaymentMethod } from "@/types/expense-tracker";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Card } from "@/components/ui/card";
+import { AlertDescription } from "@/components/ui/alert";
 import {
   ArrowLeft,
   AlertCircle,
@@ -22,10 +28,10 @@ import {
   Smartphone,
   Pin,
   Lightbulb,
-} from 'lucide-react';
-import { motion } from 'framer-motion';
+} from "lucide-react";
+import { motion } from "framer-motion";
 
-const SESSION_KEY = 'addTransactionForm';
+const SESSION_KEY = "addTransactionForm";
 
 // Transfers don't have a natural category (categories are expense/income/
 // both), but the transaction record needs a non-empty categoryId. This
@@ -33,7 +39,7 @@ const SESSION_KEY = 'addTransactionForm';
 // flags it: it only works correctly if a category with this id actually
 // exists in the seeded/user data, otherwise transfers will show up with an
 // unresolved category everywhere categoryId is looked up.
-const FALLBACK_CATEGORY_ID = 'cat-other';
+const FALLBACK_CATEGORY_ID = "cat-other";
 
 export default function AddTransaction() {
   const navigate = useNavigate();
@@ -43,14 +49,16 @@ export default function AddTransaction() {
   const { categories, accounts, settings } = data;
 
   // Form state
-  const [type, setType] = useState<TransactionType>((params.get('type') as TransactionType) || 'expense');
-  const [amount, setAmount] = useState('');
-  const [categoryId, setCategoryId] = useState('');
-  const [accountId, setAccountId] = useState(accounts[0]?.id || '');
-  const [toAccountId, setToAccountId] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('cash');
-  const [notes, setNotes] = useState('');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [type, setType] = useState<TransactionType>(
+    (params.get("type") as TransactionType) || "expense",
+  );
+  const [amount, setAmount] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [accountId, setAccountId] = useState(accounts[0]?.id || "");
+  const [toAccountId, setToAccountId] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
+  const [notes, setNotes] = useState("");
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [time, setTime] = useState(new Date().toTimeString().slice(0, 5));
 
   // Validation state
@@ -91,44 +99,82 @@ export default function AddTransaction() {
   useEffect(() => {
     sessionStorage.setItem(
       SESSION_KEY,
-      JSON.stringify({ type, amount, categoryId, accountId, toAccountId, paymentMethod, notes, date, time })
+      JSON.stringify({
+        type,
+        amount,
+        categoryId,
+        accountId,
+        toAccountId,
+        paymentMethod,
+        notes,
+        date,
+        time,
+      }),
     );
-  }, [type, amount, categoryId, accountId, toAccountId, paymentMethod, notes, date, time]);
+  }, [
+    type,
+    amount,
+    categoryId,
+    accountId,
+    toAccountId,
+    paymentMethod,
+    notes,
+    date,
+    time,
+  ]);
 
   const filteredCategories = useMemo(
-    () => categories.filter((c) => c.type === type || c.type === 'both'),
-    [categories, type]
+    () => categories.filter((c) => c.type === type || c.type === "both"),
+    [categories, type],
   );
-  const currentCategory = useMemo(() => categories.find((c) => c.id === categoryId), [categories, categoryId]);
-  const currentAccount = useMemo(() => accounts.find((a) => a.id === accountId), [accounts, accountId]);
-  const transferAccount = useMemo(() => accounts.find((a) => a.id === toAccountId), [accounts, toAccountId]);
+  const currentCategory = useMemo(
+    () => categories.find((c) => c.id === categoryId),
+    [categories, categoryId],
+  );
+  const currentAccount = useMemo(
+    () => accounts.find((a) => a.id === accountId),
+    [accounts, accountId],
+  );
+  const transferAccount = useMemo(
+    () => accounts.find((a) => a.id === toAccountId),
+    [accounts, toAccountId],
+  );
 
-  const AccountIcon = currentAccount ? getIconComponent(currentAccount.icon) : null;
-  const CategoryIcon = currentCategory ? getIconComponent(currentCategory.icon) : null;
-  const TransferAccountIcon = transferAccount ? getIconComponent(transferAccount.icon) : null;
+  const AccountIcon = currentAccount
+    ? getIconComponent(currentAccount.icon)
+    : null;
+  const CategoryIcon = currentCategory
+    ? getIconComponent(currentCategory.icon)
+    : null;
+  const TransferAccountIcon = transferAccount
+    ? getIconComponent(transferAccount.icon)
+    : null;
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
     const numericAmount = Number(amount);
 
     if (!amount || Number.isNaN(numericAmount) || numericAmount <= 0) {
-      newErrors.amount = 'Please enter a valid amount';
+      newErrors.amount = "Please enter a valid amount";
     }
 
-    if (type !== 'transfer' && !categoryId) {
-      newErrors.category = 'Please select a category';
+    if (type !== "transfer" && !categoryId) {
+      newErrors.category = "Please select a category";
     }
 
     if (!accountId) {
-      newErrors.account = accounts.length === 0 ? 'Create an account before adding transactions' : 'Please select an account';
+      newErrors.account =
+        accounts.length === 0
+          ? "Create an account before adding transactions"
+          : "Please select an account";
     }
 
-    if (type === 'transfer' && !toAccountId) {
-      newErrors.toAccount = 'Please select a destination account';
+    if (type === "transfer" && !toAccountId) {
+      newErrors.toAccount = "Please select a destination account";
     }
 
-    if (type === 'transfer' && accountId && accountId === toAccountId) {
-      newErrors.toAccount = 'Transfer accounts cannot be the same';
+    if (type === "transfer" && accountId && accountId === toAccountId) {
+      newErrors.toAccount = "Transfer accounts cannot be the same";
     }
 
     setErrors(newErrors);
@@ -148,14 +194,16 @@ export default function AddTransaction() {
       const transAmount = Number(amount);
       let newBalance = currentAccount?.balance || 0;
 
-      if (type === 'expense') {
+      if (type === "expense") {
         newBalance -= transAmount;
-      } else if (type === 'income') {
+      } else if (type === "income") {
         newBalance += transAmount;
-      } else if (type === 'transfer') {
+      } else if (type === "transfer") {
         newBalance -= transAmount;
         if (transferAccount) {
-          updateAccount(toAccountId, { balance: transferAccount.balance + transAmount });
+          updateAccount(toAccountId, {
+            balance: transferAccount.balance + transAmount,
+          });
         }
       }
 
@@ -165,12 +213,12 @@ export default function AddTransaction() {
         id: generateId(),
         type,
         amount: transAmount,
-        categoryId: type === 'transfer' ? FALLBACK_CATEGORY_ID : categoryId,
+        categoryId: type === "transfer" ? FALLBACK_CATEGORY_ID : categoryId,
         date,
         time,
         paymentMethod,
         accountId,
-        toAccountId: type === 'transfer' ? toAccountId : undefined,
+        toAccountId: type === "transfer" ? toAccountId : undefined,
         notes,
         isRecurring: false,
         createdAt: new Date().toISOString(),
@@ -178,17 +226,17 @@ export default function AddTransaction() {
 
       sessionStorage.removeItem(SESSION_KEY);
       toast({
-        title: 'Success',
+        title: "Success",
         description: `${type.charAt(0).toUpperCase() + type.slice(1)} added successfully!`,
       });
-      navigate('/');
+      navigate("/");
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Failed to add transaction. Please try again.',
-        variant: 'destructive',
+        title: "Error",
+        description: "Failed to add transaction. Please try again.",
+        variant: "destructive",
       });
-      setErrors({ submit: 'Failed to add transaction. Please try again.' });
+      setErrors({ submit: "Failed to add transaction. Please try again." });
     } finally {
       setIsSubmitting(false);
     }
@@ -201,7 +249,7 @@ export default function AddTransaction() {
   }, [navigate]);
 
   const numericAmount = Number(amount);
-  const hasValidAmount = amount !== '' && !Number.isNaN(numericAmount);
+  const hasValidAmount = amount !== "" && !Number.isNaN(numericAmount);
 
   return (
     <motion.div
@@ -220,18 +268,27 @@ export default function AddTransaction() {
         >
           <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
         </button>
-        <h1 className="text-lg sm:text-2xl font-bold text-foreground">Add Transaction</h1>
+        <h1 className="text-lg sm:text-2xl font-bold text-foreground">
+          Add Transaction
+        </h1>
       </div>
 
       {accounts.length === 0 && (
         <div className="flex items-start gap-3 rounded-lg bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-900 p-4 text-sm">
           <AlertCircle className="h-5 w-5 text-yellow-600 dark:text-yellow-500 shrink-0 mt-0.5" />
           <div>
-            <p className="font-semibold text-yellow-900 dark:text-yellow-100">No accounts yet</p>
+            <p className="font-semibold text-yellow-900 dark:text-yellow-100">
+              No accounts yet
+            </p>
             <p className="text-yellow-800 dark:text-yellow-200 mt-0.5">
               You'll need at least one account before you can add a transaction.
             </p>
-            <Button size="sm" variant="outline" className="mt-2" onClick={() => navigate('/accounts')}>
+            <Button
+              size="sm"
+              variant="outline"
+              className="mt-2"
+              onClick={() => navigate("/accounts")}
+            >
               Create an account
             </Button>
           </div>
@@ -246,7 +303,7 @@ export default function AddTransaction() {
             {errors.submit && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
+                animate={{ opacity: 1, height: "auto" }}
                 className="flex gap-3 rounded-lg bg-destructive/10 border border-destructive/20 p-4 text-sm text-destructive"
               >
                 <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" />
@@ -257,31 +314,39 @@ export default function AddTransaction() {
             {/* Transaction Type Selector */}
             <div className="space-y-3">
               <Label className="text-base font-semibold">Type</Label>
-              <div className="flex gap-2 rounded-lg bg-muted p-1.5" role="radiogroup" aria-label="Transaction type">
-                {(['expense', 'income', 'transfer'] as TransactionType[]).map((t) => (
-                  <button
-                    key={t}
-                    type="button"
-                    role="radio"
-                    aria-checked={type === t}
-                    onClick={() => {
-                      setType(t);
-                      setCategoryId('');
-                      setToAccountId('');
-                      setErrors({});
-                    }}
-                    className={`flex-1 inline-flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-semibold transition-all duration-200 capitalize ${
-                      type === t
-                        ? 'bg-background text-foreground shadow-sm'
-                        : 'text-muted-foreground hover:text-foreground'
-                    }`}
-                  >
-                    {t === 'expense' && <TrendingDown className="h-4 w-4" />}
-                    {t === 'income' && <DollarSign className="h-4 w-4" />}
-                    {t === 'transfer' && <ArrowRightLeft className="h-4 w-4" />}
-                    <span>{t}</span>
-                  </button>
-                ))}
+              <div
+                className="flex gap-2 rounded-lg bg-muted p-1.5"
+                role="radiogroup"
+                aria-label="Transaction type"
+              >
+                {(["expense", "income", "transfer"] as TransactionType[]).map(
+                  (t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      role="radio"
+                      aria-checked={type === t}
+                      onClick={() => {
+                        setType(t);
+                        setCategoryId("");
+                        setToAccountId("");
+                        setErrors({});
+                      }}
+                      className={`flex-1 inline-flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-semibold transition-all duration-200 capitalize ${
+                        type === t
+                          ? "bg-background text-foreground shadow-sm"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      {t === "expense" && <TrendingDown className="h-4 w-4" />}
+                      {t === "income" && <DollarSign className="h-4 w-4" />}
+                      {t === "transfer" && (
+                        <ArrowRightLeft className="h-4 w-4" />
+                      )}
+                      <span>{t}</span>
+                    </button>
+                  ),
+                )}
               </div>
             </div>
 
@@ -303,10 +368,12 @@ export default function AddTransaction() {
                   value={amount}
                   onChange={(e) => {
                     setAmount(e.target.value);
-                    if (errors.amount) setErrors({ ...errors, amount: '' });
+                    if (errors.amount) setErrors({ ...errors, amount: "" });
                   }}
                   className={`text-3xl font-bold h-16 pl-16 ${
-                    errors.amount ? 'border-destructive focus-visible:ring-destructive' : ''
+                    errors.amount
+                      ? "border-destructive focus-visible:ring-destructive"
+                      : ""
                   }`}
                   autoFocus
                   disabled={isSubmitting}
@@ -320,15 +387,23 @@ export default function AddTransaction() {
             </div>
 
             {/* Category (if not transfer) */}
-            {type !== 'transfer' && (
+            {type !== "transfer" && (
               <div className="space-y-3">
                 <Label htmlFor="category" className="text-base font-semibold">
                   Category
                 </Label>
-                <Select value={categoryId} onValueChange={(v) => setCategoryId(v)} disabled={isSubmitting}>
+                <Select
+                  value={categoryId}
+                  onValueChange={(v) => setCategoryId(v)}
+                  disabled={isSubmitting}
+                >
                   <SelectTrigger
                     id="category"
-                    className={errors.category ? 'border-destructive focus-visible:ring-destructive' : ''}
+                    className={
+                      errors.category
+                        ? "border-destructive focus-visible:ring-destructive"
+                        : ""
+                    }
                   >
                     <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
@@ -359,12 +434,24 @@ export default function AddTransaction() {
               <Label htmlFor="account" className="text-base font-semibold">
                 From Account
               </Label>
-              <Select value={accountId} onValueChange={(v) => setAccountId(v)} disabled={isSubmitting}>
+              <Select
+                value={accountId}
+                onValueChange={(v) => setAccountId(v)}
+                disabled={isSubmitting}
+              >
                 <SelectTrigger
                   id="account"
-                  className={errors.account ? 'border-destructive focus-visible:ring-destructive' : ''}
+                  className={
+                    errors.account
+                      ? "border-destructive focus-visible:ring-destructive"
+                      : ""
+                  }
                 >
-                  <SelectValue placeholder={accounts.length === 0 ? 'No accounts yet' : undefined} />
+                  <SelectValue
+                    placeholder={
+                      accounts.length === 0 ? "No accounts yet" : undefined
+                    }
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {accounts.map((a) => {
@@ -388,15 +475,23 @@ export default function AddTransaction() {
             </div>
 
             {/* Transfer Target Account */}
-            {type === 'transfer' && (
+            {type === "transfer" && (
               <div className="space-y-3">
                 <Label htmlFor="toAccount" className="text-base font-semibold">
                   To Account
                 </Label>
-                <Select value={toAccountId} onValueChange={(v) => setToAccountId(v)} disabled={isSubmitting}>
+                <Select
+                  value={toAccountId}
+                  onValueChange={(v) => setToAccountId(v)}
+                  disabled={isSubmitting}
+                >
                   <SelectTrigger
                     id="toAccount"
-                    className={errors.toAccount ? 'border-destructive focus-visible:ring-destructive' : ''}
+                    className={
+                      errors.toAccount
+                        ? "border-destructive focus-visible:ring-destructive"
+                        : ""
+                    }
                   >
                     <SelectValue placeholder="Select destination account" />
                   </SelectTrigger>
@@ -430,13 +525,25 @@ export default function AddTransaction() {
                 <Label htmlFor="date" className="font-semibold">
                   Date
                 </Label>
-                <Input id="date" type="date" value={date} onChange={(e) => setDate(e.target.value)} disabled={isSubmitting} />
+                <Input
+                  id="date"
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  disabled={isSubmitting}
+                />
               </div>
               <div className="space-y-3">
                 <Label htmlFor="time" className="font-semibold">
                   Time
                 </Label>
-                <Input id="time" type="time" value={time} onChange={(e) => setTime(e.target.value)} disabled={isSubmitting} />
+                <Input
+                  id="time"
+                  type="time"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  disabled={isSubmitting}
+                />
               </div>
             </div>
 
@@ -505,7 +612,11 @@ export default function AddTransaction() {
             </div>
 
             {/* Submit Button */}
-            <Button type="submit" disabled={isSubmitting || !amount} className="w-full h-12 text-base font-semibold transition-all">
+            <Button
+              type="submit"
+              disabled={isSubmitting || !amount}
+              className="w-full h-12 text-base font-semibold transition-all"
+            >
               {isSubmitting ? (
                 <>
                   <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
@@ -528,12 +639,12 @@ export default function AddTransaction() {
                 {formatCurrency(numericAmount, settings.currencySymbol)}
               </p>
               <p className="text-xs text-muted-foreground mt-3 flex items-center gap-2">
-                {type === 'expense' && (
+                {type === "expense" && (
                   <>
                     <TrendingDown className="h-3 w-3" /> Will be deducted from
                   </>
                 )}
-                {type === 'income' && (
+                {type === "income" && (
                   <>
                     <DollarSign className="h-3 w-3" /> Will be added to
                   </>
@@ -541,7 +652,7 @@ export default function AddTransaction() {
                 {/* Fixed: this used to say "Will transfer to" while showing the
                     SOURCE account below it — the actual destination account
                     already has its own "Destination" card further down. */}
-                {type === 'transfer' && (
+                {type === "transfer" && (
                   <>
                     <ArrowRightLeft className="h-3 w-3" /> Will transfer from
                   </>
@@ -557,28 +668,36 @@ export default function AddTransaction() {
           )}
 
           {/* Category Info */}
-          {currentCategory && CategoryIcon && type !== 'transfer' && (
+          {currentCategory && CategoryIcon && type !== "transfer" && (
             <Card className="p-6 border-border/50">
-              <p className="text-xs text-muted-foreground uppercase tracking-wide mb-3">Category</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wide mb-3">
+                Category
+              </p>
               <div className="flex items-center gap-3">
                 <CategoryIcon className="h-7 w-7" />
                 <div>
                   <p className="font-semibold">{currentCategory.name}</p>
-                  <p className="text-xs text-muted-foreground uppercase">{type === 'expense' ? 'Expense' : 'Income'}</p>
+                  <p className="text-xs text-muted-foreground uppercase">
+                    {type === "expense" ? "Expense" : "Income"}
+                  </p>
                 </div>
               </div>
             </Card>
           )}
 
           {/* Transfer Info */}
-          {type === 'transfer' && transferAccount && TransferAccountIcon && (
+          {type === "transfer" && transferAccount && TransferAccountIcon && (
             <Card className="p-6 border-border/50">
-              <p className="text-xs text-muted-foreground uppercase tracking-wide mb-3">Destination</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wide mb-3">
+                Destination
+              </p>
               <div className="flex items-center gap-3">
                 <TransferAccountIcon className="h-7 w-7" />
                 <div>
                   <p className="font-semibold">{transferAccount.name}</p>
-                  <p className="text-xs text-muted-foreground">Transfer Destination</p>
+                  <p className="text-xs text-muted-foreground">
+                    Transfer Destination
+                  </p>
                 </div>
               </div>
             </Card>
