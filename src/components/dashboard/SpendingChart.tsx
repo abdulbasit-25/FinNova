@@ -1,6 +1,10 @@
-import { useApp } from '@/contexts/AppContext';
-import { getMonthKey, getTransactionsForMonth, getCategoryTotals } from '@/lib/helpers';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import { useApp } from "@/contexts/AppContext";
+import {
+  getMonthKey,
+  getTransactionsForMonth,
+  getCategoryTotals,
+} from "@/lib/helpers";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
 export function SpendingChart() {
   const { data } = useApp();
@@ -12,15 +16,21 @@ export function SpendingChart() {
 
   const chartData = Object.entries(catTotals)
     .map(([catId, amount]) => {
-      const cat = categories.find(c => c.id === catId);
-      return { name: cat?.name || 'Other', value: amount, color: `hsl(${cat?.color || '220 10% 46%'})` };
+      const cat = categories.find((c) => c.id === catId);
+      return {
+        name: cat?.name || "Other",
+        value: amount,
+        color: `hsl(${cat?.color || "220 10% 46%"})`,
+      };
     })
     .sort((a, b) => b.value - a.value);
 
   if (chartData.length === 0) {
     return (
       <div className="glass-card p-6">
-        <h3 className="text-sm font-semibold text-foreground mb-4">Category Breakdown</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-4">
+          Category Breakdown
+        </h3>
         <div className="flex items-center justify-center h-48 text-sm text-muted-foreground">
           No expense data this month
         </div>
@@ -30,7 +40,9 @@ export function SpendingChart() {
 
   return (
     <div className="glass-card p-6">
-      <h3 className="text-sm font-semibold text-foreground mb-4">Category Breakdown</h3>
+      <h3 className="text-sm font-semibold text-foreground mb-4">
+        Category Breakdown
+      </h3>
       <ResponsiveContainer width="100%" height={200}>
         <PieChart>
           <Pie
@@ -46,28 +58,33 @@ export function SpendingChart() {
               <Cell key={i} fill={entry.color} />
             ))}
           </Pie>
-        <Tooltip
-  formatter={(value: number) => `${sym}${value.toFixed(2)}`}
-  contentStyle={{
-    borderRadius: '8px',
-    border: '1px solid hsl(var(--border))',
-    backgroundColor: 'hsl(var(--card))',
-  }}
-  itemStyle={{
-    color: 'hsl(var(--foreground))',
-  }}
-  labelStyle={{
-    color: 'hsl(var(--foreground))',
-    fontWeight: 600,
-  }}
-/>
-
+          <Tooltip
+            formatter={(value: number) => `${sym}${value.toFixed(2)}`}
+            contentStyle={{
+              borderRadius: "8px",
+              border: "1px solid hsl(var(--border))",
+              backgroundColor: "hsl(var(--card))",
+            }}
+            itemStyle={{
+              color: "hsl(var(--foreground))",
+            }}
+            labelStyle={{
+              color: "hsl(var(--foreground))",
+              fontWeight: 600,
+            }}
+          />
         </PieChart>
       </ResponsiveContainer>
       <div className="mt-3 flex flex-wrap gap-3">
-        {chartData.slice(0, 5).map(d => (
-          <div key={d.name} className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: d.color }} />
+        {chartData.slice(0, 5).map((d) => (
+          <div
+            key={d.name}
+            className="flex items-center gap-1.5 text-xs text-muted-foreground"
+          >
+            <span
+              className="h-2.5 w-2.5 rounded-full"
+              style={{ backgroundColor: d.color }}
+            />
             {d.name}
           </div>
         ))}
