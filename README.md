@@ -223,6 +223,6 @@ Open an issue on GitHub, or reach out to the development team via the links belo
 
 _Built with ❤️ for better financial management_
 
-Last Updated: February 2026
+Last Updated: August 2026
 
 </div>
