@@ -1,6 +1,6 @@
 <div align="center">
 
-# 💸 FinOvaa
+# 💸 FinNovaa
 
 **A modern, responsive personal finance & expense tracker**
 
